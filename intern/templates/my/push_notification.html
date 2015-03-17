@@ -1,0 +1,30 @@
+{% extends "my/parents/my_layout.html" %}
+
+{% load humanize templated_form %}
+
+{% block tabtitle %}Push Nachricht{% endblock %}
+
+{% block headline %}
+    <h1>Push Nachricht</h1>
+{% endblock %}
+
+{% block tabcontent %}
+
+    <div>
+        <a href="{% url "intern:my_push" %}" class="btn btn-default pull-right"><span class="glyphicon glyphicon-arrow-left"></span> zurück</a>
+        <br class="clearfix" />
+    </div>
+
+    <form class="form" method="POST" action=".">{% csrf_token %}
+
+        {% parse_form form %}
+        <div class="form-group">
+            <div class="">
+                <input type="submit" class="btn btn-success" value="Speichern" />
+                <input type="reset" class="btn btn-warning" value="Reset" />
+            </div>
+        </div>
+        <br />
+    </form>
+
+{% endblock %}

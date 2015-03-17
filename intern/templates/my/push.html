@@ -1,0 +1,100 @@
+{% extends "my/parents/my_layout.html" %}
+
+{% load humanize economy_tags %}
+
+{% block tabtitle %}Push Service{% endblock %}
+
+{% block headline %}
+    <h1>Push Service</h1>
+{% endblock %}
+
+{% block tabcontent %}
+
+    {% if not user.pushover_client %}
+        <div class="alert alert-info">
+            <strong>Pushover App installieren</strong><br />
+            <p>Ich habe mit dem Service Pushover nix am Hut. Es gibt eine kostenlose Testphase, anschließend kostet der Dienst 5 € einmalig (zahlbar in der App).</p>
+            <br />
+            <a href="https://pushover.net/clients/android" target="_blank">Für Android</a><br />
+            <a href="https://pushover.net/clients/ios" target="_blank">Für iOS (Apple)</a>
+        </div>
+
+        <form action="." method="post" class="form">{% csrf_token %}
+            <input type="hidden" name="enabled" value="1" />
+            <div class="form-group">
+                <input class="form-control" type="text" name="client_token" value="" placeholder="Client ID aus der App einfügen" />
+            </div>
+
+            <div class="form-group">
+                <input type="submit" class="btn btn-success" value="Client Token hinzufügen" />
+            </div>
+        </form>
+    {% else %}
+        {% if user.pushover_client.enabled %}
+            <div class="alert alert-success">
+                <strong>Aktiv</strong>
+                <p>Client ID: {{ user.pushover_client.client_token }}</p>
+            </div>
+        {% else %}
+            <div class="alert alert-danger">
+                <strong>Inaktiv</strong>
+                <p>Client ID: {{ user.pushover_client.client_token }}</p>
+                <p>Bitte melden, da lief etwas schief.</p>
+            </div>
+        {% endif %}
+
+        <div>
+            <a href="notification/new" class="btn btn-default pull-right"><span class="glyphicon glyphicon-edit"></span> Neue Mitteilung erstellen</a>
+        </div>
+
+        <table class="table">
+        <thead>
+        <tr>
+            <th>Allianz</th>
+            <th>Eigene Spieler</th>
+            <th>Priorität</th>
+            <th>Intervall (Sek.)</th>
+            <th>Verfall (Sek.)</th>
+            <th><span class="glyphicon glyphicon-edit"></span></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for object in notification_list %}
+        <tr>
+            <td>{{ object.match_alliance.name|default:'-/-' }}</td>
+            <td>{{ object.match_my_players|yesno }}</td>
+            <td>{{ object.get_priority_display }}</td>
+            <td>{{ object.retry }}</td>
+            <td>{{ object.expire }}</td>
+            <td>
+                <a href="notification/{{ object.pk }}"><span class="glyphicon glyphicon-edit"></span> bearbeiten</a>
+                <a href="notification/{{ object.pk }}/?test=1"><span class="glyphicon glyphicon-phone"></span> testen</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">Es sind keine Mitteilungen angelegt</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+
+        <h4>Wann wird man benachrichtigt?</h4>
+
+        <p>Man kann entscheiden zwischen <u>Allianz</u> oder <u>eigene Spieler</u>. Allianz heißt: sobald ein
+            Angriff in der angegebenen Allianz kommt wird man benachrichtigt. Eigene Spieler hingegen sind Spieler
+            welche hier im System unter Deinem Benutzer verwaltet werden.</p>
+
+        <p>Es ist möglich mehrere "Mitteilungen" anzulegen. Sollten mehrere Mitteilungen bei einem Angriff zuständig
+            sein (Angriff auf Dich und in Deiner Allianz), wird die Mitteilung mit der höheren Priorität verwendet.</p>
+
+        <h4>Priorität: Emergency</h4>
+
+        <p>Emergency bedeutet, dass das Handy im angegebenen Intervall so lange klingelt bis entweder der Alarm
+            weggedrückt wird, oder die Verfallszeit erreicht wurde.</p>
+
+        <p></p>
+
+    {% endif %}
+
+{% endblock %}

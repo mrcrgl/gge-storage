@@ -1,0 +1,25 @@
+{% extends "layout_intern.html" %}
+
+{% load humanize %}
+
+{% block pagetitle %}
+    {% block tabtitle %}{% endblock %} | Spieler: {{ player.name }}
+{% endblock %}
+
+{% block breadcrumb %}
+    <!--
+    <li><a href="{% url "intern:player_list" %}">Players</a></li>
+    <li class="active">{{ player.name }}</li>
+    -->
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+    <div class="col-md-3">
+        {% include "my/partials/subnav.html" %}
+    </div>
+    <div class="col-md-9">
+        {% block tabcontent %}{% endblock %}
+    </div>
+    </div>
+{% endblock %}

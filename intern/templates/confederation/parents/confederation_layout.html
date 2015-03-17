@@ -1,0 +1,45 @@
+{% extends "layout_intern.html" %}
+
+{% load humanize %}
+
+{% block breadcrumb %}
+    <li class="active">{{ confederation }}</li>
+{% endblock %}
+
+{% block pagetitle %}{{ confederation }} | Confederation{% endblock %}
+
+{% block headline %}
+    <h1>{{ confederation }}</h1>
+{% endblock %}
+
+{% block content %}
+
+    <div class="alert alert-warning">
+    <strong><span class="glyphicon glyphicon-bullhorn"></span> Im Aufbau</strong> Ich arbeite hart an dieser Seite, bitte noch um etwas Geduld.
+    </div>
+
+    <div class="row">
+    <div class="col-sm-3">
+        {% if confederation.logo %}
+            <div class="clearfix">
+            <img class="img-thumbnail" src="{{ confederation.logo.url }}" title="Logo: {{ confederation }}" alt="Logo: {{ confederation }}" />
+            </div>
+            <br />
+
+        {% endif %}
+        {% include "confederation/partials/navigation_aside.html" %}
+
+        <h3>Alliances</h3>
+
+        <ol>
+            {% for alliance in confederation.alliances.all %}
+            <li><a href="{{ alliance.get_absolute_url }}">{{ alliance }}</a></li>
+            {% endfor %}
+        </ol>
+    </div>
+    <div class="col-sm-9">
+        {% block tab_content %}{% endblock %}
+    </div>
+    </div>
+
+{% endblock %}

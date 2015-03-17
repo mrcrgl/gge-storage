@@ -1,0 +1,89 @@
+{% extends "layout_intern.html" %}
+
+{% load humanize map_tags %}
+
+{% block headline %}
+    <span class="pull-right">
+        updated {{ alliance.updated|timesince }} ago<br />
+        <a class="btn btn-small btn-success" href="{% url "intern:alliance_neighborhood" pk=alliance.pk %}">Karte</a>
+    </span>
+    <h1>{{ alliance.name }} <small><span class="label label-info">{{ alliance.level }}</span> {{ alliance.players.count }} Members</small></h1>
+{% endblock %}
+
+{% block pagetitle %}
+    Allianz: {{ alliance.name }}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="{% url "intern:alliance_list" %}">Alliances</a></li>
+    <li class="active">{{ alliance.name }}</li>
+{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Members</h3>
+              </div>
+              <div class="panel-body">
+                <table class="table table-responsive">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Alliance Rank</th>
+                            <th>Level</th>
+                            <th>Ehre</th>
+                            <th>Updated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for player in alliance.players.all|slice:":200" %}
+                        <tr>
+                            <td>{{ player.pk }}</td>
+                            <td><a href="{{ player.get_absolute_url }}">{{ player.name }}</a></td>
+                            <td>{{ player.get_alliance_rank_display }}</td>
+                            <td>{{ player.level }}</td>
+                            <td>{{ player.honor }}</td>
+                            <td>{{ player.updated|timesince }} ago</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+              </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            {% if alliance.player_history.count %}
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Entwicklung: Allianz</h3>
+              </div>
+              <div class="panel-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Allianz</th>
+                        <th>Rang</th>
+                        <th>Datum</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for history in alliance.player_history.all|slice:":200" %}
+                    <tr>
+                        <td><a href="{{ history.player.get_absolute_url }}">{{ history.player }}</a></td>
+                        <td>{{ history.get_alliance_rank_display }}</td>
+                        <td>{{ history.reached|date:"SHORT_DATE_FORMAT" }}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+              </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

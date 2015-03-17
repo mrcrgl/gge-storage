@@ -1,0 +1,96 @@
+{% load active_navigation commit_id %}
+
+{% url "intern:player_list" as player_list_link %}
+{% url "intern:alliance_list" as alliance_list_link %}
+{% url "intern:castle_list" as castle_list_link %}
+{% url "auth:login" as login_link %}
+{% url "intern:index" as dashboard_link %}
+
+<!-- Fixed navbar -->
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Weeha Toolchain</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                {% if user.is_authenticated %}
+                <li><a href="{{ dashboard_link }}"><span class="glyphicon glyphicon-dashboard"></span></a></li>
+
+                    {#% if request.player.alliance.confederation %#}
+                <!-- <li><a href="{{ request.player.alliance.confederation.get_absolute_url }}"><span class="glyphicon glyphicon-dashboard"></span> {{ user.player.alliance.confederation }}</a></li> -->
+                {#% endif %#}
+
+                <li class="{% is_active player_list_link %}"><a href="{{ player_list_link }}"><span class="glyphicon glyphicon-user"></span> Spieler</a></li>
+                <li class="{% is_active alliance_list_link %}"><a href="{{ alliance_list_link }}"><span class="glyphicon glyphicon-flash"></span> Allianzen</a></li>
+                <li class="{% is_active castle_list_link %}">
+                    <a href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle"><span class="glyphicon glyphicon-tower"></span> Burgen <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ castle_list_link }}">Alle</a></li>
+                        <li><a href="{% url "intern:castle_list_unassigned" %}">Leerstehend</a></li>
+                        <li><a href="{% url "intern:castle_list_ruine_ap" %}">Freie Außenposten</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle"><span class="glyphicon glyphicon-wrench"></span> Tools <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url "intern:tools_castlesbydistance" %}">Wer hat mich sabotiert?</a></li>
+                    </ul>
+                </li>
+                {% endif %}
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% if user.is_authenticated %}
+                <li class="dropdown">
+                    <a href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle"><span class="glyphicon glyphicon-check"></span> {{ request.player.name }} <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        {% if user.players.count %}
+                        {% for player in user.players.all %}
+                            <li{% if player.pk == request.player.pk %} class="disabled"{% endif %}>
+                                <a href="?player_id={{ player.pk }}">
+                                    <span class="glyphicon glyphicon-{% if player.pk == request.player.pk %}check{% else %}share{% endif %}"></span> {{ player.name }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                        <li class="divider"></li>
+                        {% endif %}
+                        {% if request.player %}
+                            <!-- <li><a href="{% url "intern:my_settings" %}"><span class="glyphicon glyphicon-cog"></span> Einstellungen</a></li> -->
+                            {% if perms.gge_proxy_manager.add_castleeconomy %}
+                            <li><a href="{% url "intern:my_economy" %}"><span class="glyphicon glyphicon-book"></span> Wirtschaft</a></li>
+                            {% endif %}
+                            {% if perms.gge_proxy_manager.add_productionjob or perms.gge_proxy_manager.add_logisticjob %}
+                            <li>
+                                <a href="{% url "intern:my_job_statistic" %}"><span class="glyphicon glyphicon-signal"></span> Job Statistik</a>
+                            </li>
+                            {% endif %}
+                            {% if perms.gge_proxy_manager.add_productionjob %}
+                            <li><a href="{% url "intern:my_recruitment_job_list" %}"><span class="glyphicon glyphicon-user"></span> Rekrutierung</a></li>
+                            <li><a href="{% url "intern:my_production_job_list" %}"><span class="glyphicon glyphicon-wrench"></span> Produktion</a></li>
+                            {% endif %}
+                            {% if perms.gge_proxy_manager.add_logisticjob %}
+                            <li><a href="{% url "intern:my_logistic_job_list" %}"><span class="glyphicon glyphicon-barcode"></span> Logistik</a></li>
+                            {% endif %}
+                            {% if perms.gge_proxy_manager.add_castleeconomy %}
+                            <li><a href="{% url "intern:my_push" %}"><span class="glyphicon glyphicon-phone"></span> Push Service</a></li>
+                            {% endif %}
+                        <li class="divider"></li>
+                        {% endif %}
+                        <li><a href="{% url "auth:logout" %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                        <li class="disabled"><a href="javascript:void(0);"><span class="glyphicon glyphicon-tag"></span> {% commit_id %}</a></li>
+                    </ul>
+                </li>
+                {% else %}
+                <li class="{% is_active login_link %}"><a href="{{ login_link }}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                {% endif %}
+            </ul>
+        </div>
+        <!--/.nav-collapse -->
+    </div>
+</div>

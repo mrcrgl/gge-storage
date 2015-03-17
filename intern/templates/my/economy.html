@@ -1,0 +1,199 @@
+{% extends "my/parents/my_layout.html" %}
+
+{% load humanize economy_tags %}
+
+{% block tabtitle %}Wirtschaft{% endblock %}
+
+{% block headline %}
+    <span class="pull-right">updated {{ request.player.economy.updated|timesince }} ago</span>
+    <h1>Wirtschaft <small>{{ request.player.name }}</small></h1>
+{% endblock %}
+
+{% block tabcontent %}
+    {% if not request.player.castles_with_environment.count %}
+        <div class="alert alert-warning">
+            <p>Keine Wirtschaftsinformationen vorhanden.</p>
+        </div>
+    {% else %}
+
+        <table class="table">
+        <thead>
+        <tr>
+            <th>&nbsp;</th>
+            {% for castle in request.player.castles_with_environment %}
+                <th>
+                    {{ castle }}
+                    {% if castle.economy.is_outdated %}
+                        <span class="glyphicon glyphicon-warning-sign pull-right text-danger" data-toggle="tooltip" data-placement="top" title="älter als 15 Minuten"></span>
+                    {% endif %}
+                </th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th>Lager</th>
+            {% for castle in request.player.castles_with_environment %}
+                {% with economy=castle.economy %}
+                <td>{{ economy.stock_size|intcomma }}</td>
+                {% endwith %}
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>Stadtwachen</th>
+            {% for castle in request.player.castles_with_environment %}
+                {% with economy=castle.economy %}
+                <td>{{ economy.guards|intcomma }}</td>
+                {% endwith %}
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>Verteidigung</th>
+            {% for castle in request.player.castles_with_environment %}
+                {% with economy=castle.economy %}
+                <td>{{ economy.defence_points|intcomma }}</td>
+                {% endwith %}
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>Öffentliche Ordnung</th>
+            {% for castle in request.player.castles_with_environment %}
+                {% with economy=castle.economy %}
+                <td>{{ economy.public_order|intcomma }}</td>
+                {% endwith %}
+            {% endfor %}
+        </tr>
+        </tbody>
+        </table>
+
+        <hr />
+
+        <table class="table">
+        <thead>
+        <tr>
+            <th>Rohstoffe der Burg</th>
+            <th>Futter</th>
+            <th><span class="glyphicon glyphicon-cog"></span></th>
+            <th><span class="glyphicon glyphicon-fire"></span></th>
+            <th>Holz</th>
+            <th><span class="glyphicon glyphicon-cog"></span></th>
+            <th>Stein</th>
+            <th><span class="glyphicon glyphicon-cog"></span></th>
+            <th>Lager</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for castle in request.player.castles_with_environment %}
+            {% with economy=castle.economy %}
+            <tr>
+            <th>
+                <a href="{{ castle.get_absolute_url }}">{{ castle }}</a>
+                {% if castle.economy.is_outdated %}
+                    <span class="glyphicon glyphicon-warning-sign pull-right text-danger" data-toggle="tooltip" data-placement="right" title="älter als 15 Minuten"></span>
+                {% endif %}
+            </th>
+            <td>{{ economy.food_stock|intcomma }}</td>
+            <td>{{ economy.food_production|intcomma }}</td>
+            <td><span class="text-{% if economy.food_balance > 0 %}success{% else %}danger{% endif %}">
+                <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Konsum: {{ economy.food_consumption|intcomma }}">{{ economy.food_balance|intcomma }}</a>
+            </span></td>
+            <td>{{ economy.wood_stock|intcomma }}</td>
+            <td>{{ economy.wood_production|intcomma }}</td>
+            <td>{{ economy.stone_stock|intcomma }}</td>
+            <td>{{ economy.stone_production|intcomma }}</td>
+            <td>{{ economy.stock_size|intcomma }}</td>
+
+            </tr>
+            {% endwith %}
+        {% empty %}
+        <div class="alert alert-warning">
+            <p>Keine Wirtschaftsinformationen vorhanden.</p>
+        </div>
+        {% endfor %}
+        <tr>
+            <th>Summe</th>
+            <td>{{ request.player|stock_sum_of:"food_stock"|intcomma }}</td>
+            <td>{{ request.player|stock_sum_of:"food_production"|intcomma }}</td>
+            <td>{{ request.player|stock_sum_of:"food_balance"|intcomma }}</td>
+            <td>{{ request.player|stock_sum_of:"wood_stock"|intcomma }}</td>
+            <td>{{ request.player|stock_sum_of:"wood_production"|intcomma }}</td>
+            <td>{{ request.player|stock_sum_of:"stone_stock"|intcomma }}</td>
+            <td>{{ request.player|stock_sum_of:"stone_production"|intcomma }}</td>
+            <td>{{ request.player|stock_sum_of:"stock_size"|intcomma }}</td>
+        </tr>
+        </tbody>
+        </table>
+
+        <br />
+
+        <table class="table">
+        <thead>
+        <tr>
+            <th>Einheiten in der Burg</th>
+            <th>Off</th>
+            <th>Deff</th>
+            <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for castle in request.player.castles_with_environment %}
+            <tr>
+            <th>
+                <a href="{{ castle.get_absolute_url }}">{{ castle }}</a>
+                {% if castle.economy.is_outdated %}
+                    <span class="glyphicon glyphicon-warning-sign pull-right text-danger" data-toggle="tooltip" data-placement="right" title="älter als 15 Minuten"></span>
+                {% endif %}
+            </th>
+            <td>{{ castle|soldier_amount_of_type:'off'|intcomma }}</td>
+            <td>{{ castle|soldier_amount_of_type:'deff'|intcomma }}</td>
+            <td>{{ castle|soldier_amount_of_type|intcomma }}</td>
+            </tr>
+        {% empty %}
+        <div class="alert alert-warning">
+            <p>Keine Wirtschaftsinformationen vorhanden.</p>
+        </div>
+        {% endfor %}
+        </tbody>
+        </table>
+
+        <br />
+    {% endif %}
+
+    {% for castle in request.player.castles_with_environment %}
+    <div class="col-md-6">
+        <div class="panel panel-default panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{ castle }}</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Anz.</th>
+                        <th>Einheit o. Werkzeug</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for relation in castle.economy.unit_list.unit_relations.all %}
+                    <tr>
+                        <td>{{ relation.amount }}</td>
+                        <td>{{ relation.unit }}</td>
+                    </tr>
+                    {% empty %}
+                        <tr>
+                        <td colspan="2">
+                            <div class="alert alert-warning">
+                                Keine Einheiten oder Werkzeuge gefunden.
+                            </div>
+                        </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+{% endblock %}

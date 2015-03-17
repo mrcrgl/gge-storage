@@ -1,0 +1,44 @@
+{% extends "layout_intern.html" %}
+
+{% load humanize %}
+
+{% block breadcrumb %}
+    <li class="active">Alliances</li>
+{% endblock %}
+
+{% block pagetitle %}
+    Allianzen
+{% endblock %}
+
+{% block headline %}
+    <h1>Allianzen</h1>
+{% endblock %}
+
+{% block content %}
+
+    {% include "partials/list-helper.html" %}
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Alliance</th>
+                <th>Members</th>
+                <th>Level</th>
+                <th>Updated</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for alliance in object_list %}
+            <tr>
+                <td>{{ alliance.pk }}</td>
+                <td><a href="{{ alliance.get_absolute_url }}">{{ alliance.name }}</a></td>
+                <td>{{ alliance.players.count }}</td>
+                <td>{{ alliance.level }}</td>
+                <td>{{ alliance.updated|timesince }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "templated_forms/enclosure/default.html" %}
+
+{% block form_widget_content %}
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" name="{{ field.html_name }}" id="id_{{ field.name }}"
+                   value="1" {% if field.value %}checked{% endif %}>
+            {{ field.label }}
+        </label>
+    </div>
+    {% if field.help_text %}<span class="help-block">{{ field.help_text }}</span>{% endif %}
+    {% for message in field.errors %}
+        <p class="help-block">{{ message }}</p>
+    {% endfor %}
+
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base_layout.html" %}
+{% load templated_form %}
+
+{% block pagetitle %}
+    Login
+{% endblock %}
+
+{% block headline-block %}{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3 well">
+                {% if form.errors %}
+                    <div class="alert alert-warning">
+                        <i class="glyphicon glyphicon-warning-sign"></i>
+                        Zugangsdaten sind falsch.
+
+                        <a href="javascript:void(0);">Passwort vergessen?</a>
+                    </div>
+                {% endif %}
+
+                <form method="post" action="{% url "auth:login" %}">{% csrf_token %}
+
+                    {% parse_form form %}
+                    <div class="form-group form-actions">
+                        <a class="pull-right btn btn-link" href="javascript:void(0);"><span
+                                class="glyphicon glyphicon-floppy-disk"></span> Registrieren</a>
+                        <button type="submit" name="save_changes" class="btn btn-success btn-large">
+                            <span class="glyphicon glyphicon-lock"></span>
+                            Log me in...
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

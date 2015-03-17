@@ -1,0 +1,15 @@
+{% extends "templated_forms/enclosure/default.html" %}
+
+{% block form_widget_content %}
+
+        <label for="id_{{ field.name }}">{{ field.label }}</label>
+        <input type="file" name="{{ field.html_name }}" id="id_{{ field.name }}">
+
+        <p><a href="{{ field.value.url }}">{{ field.value }}</a></p>
+
+        {% if field.help_text %}<span class="help-block">{{ field.help_text }}</span>{% endif %}
+        {% for message in field.errors %}
+            <p class="help-block">{{ message }}</p>
+        {% endfor %}
+
+{% endblock %}

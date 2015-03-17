@@ -1,0 +1,19 @@
+{% extends "_base_error.html" %}
+
+{% load static %}
+
+{% block page-title %}Error 500 - Internal server error{% endblock %}
+
+{% block content %}
+
+    <div class="centered-box">
+        <h1 class="error-code centered">500</h1>
+
+        <p>WTF?! Wie hast du das geschafft? Irgendwas stimmt mit mir nicht.</p>
+
+        <img src="{% static "img/sticker-shocked.png" %}" class="centered" />
+
+        <p><a href="/">&lt;- zurück</a></p>
+    </div>
+
+{% endblock %}

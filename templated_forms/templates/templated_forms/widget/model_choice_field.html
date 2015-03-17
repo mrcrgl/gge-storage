@@ -1,0 +1,20 @@
+{% extends "templated_forms/enclosure/default.html" %}
+
+{% block form_widget_content %}
+
+<label for="id_{{ field.name }}">{{ field.label }}{% if field.field.is_required %} *{% endif %}</label>
+    <select name="{{ field.html_name }}" class="form-control" id="id_{{ field.name }}">
+        {% if field.field.empty_label != None %}
+            <option value="">{% if field.field.empty_label %}{{ field.field.empty_label }}{% else %}---------{% endif %}</option>
+        {% endif %}
+        {% for object in field.field.queryset %}
+            <option value="{{ object.pk }}" {% if field.value|add:0 == object.pk %}selected{% endif %}>{{ object }}</option>
+        {% endfor %}
+    </select>
+
+    {% if field.help_text %}<span class="help-block">{{ field.help_text }}</span>{% endif %}
+    {% for message in field.errors %}
+        <p class="help-block">{{ message }}</p>
+    {% endfor %}
+
+{% endblock %}

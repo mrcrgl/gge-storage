@@ -1,0 +1,6 @@
+{% extends "templated_forms/enclosure/default.html" %}
+
+{% block form_widget_content %}
+    <label for="id_{{ field.name }}">{{ field.label }}</label>
+    <textarea id="id_{{ field.name }}" class="toWysiwyg" name="{{ field.html_name }}"></textarea>
+{% endblock %}

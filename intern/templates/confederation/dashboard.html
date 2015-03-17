@@ -1,0 +1,21 @@
+{% extends "confederation/parents/confederation_layout.html" %}
+
+{% block tab_content %}
+    <div class="row">
+    <div class="col-sm-6">
+        <div class="well">
+            {{ confederation.description|safe }}
+        </div>
+    </div>
+    {% if alliances_in_war.count %}
+    <div class="col-sm-6">
+        <div class="alert alert-danger">
+            <strong>Im Krieg mit</strong>
+            {% for in_war in alliances_in_war %}
+                <a href="{{ in_war.get_absolute_url }}">{{ in_war }}</a>{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    </div>
+{% endblock %}

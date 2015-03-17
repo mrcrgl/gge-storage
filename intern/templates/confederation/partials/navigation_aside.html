@@ -1,0 +1,8 @@
+<ul class="nav nav-pills nav-stacked">
+    <li class="active"><a href="{% url "intern:confederation_dashboard" slug=confederation.slug %}">Home</a></li>
+    <li><a href="{% url "intern:confederation_related_alliances" slug=confederation.slug %}">BNDs & NAPs</a></li>
+    <li><a href="{% url "intern:confederation_members" slug=confederation.slug %}">Mitglieder <span class="badge pull-right">{{ confederation.get_members.count }}</span></a></li>
+    <li><a href="#">Publikationen</a></li>
+    <li><a href="#">Verhandlungen</a></li>
+    <li><a href="#">Umfragen</a></li>
+</ul>

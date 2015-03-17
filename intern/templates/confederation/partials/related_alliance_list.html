@@ -1,0 +1,20 @@
+<table class="table">
+    <thead>
+    <tr>
+        <th>Alliance</th>
+        <th>Type</th>
+        <th>Level</th>
+        <th>Ehre</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for related in related_alliances %}
+        <tr>
+            <td><a href="{{ related.get_absolute_url }}">{{ related.name }}</a></td>
+            <td>{{ related.get_type_display }}</td>
+            <td>{{ member.level }}</td>
+            <td>{{ member.honor }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

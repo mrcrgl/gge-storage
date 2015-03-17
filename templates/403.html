@@ -1,0 +1,17 @@
+{% extends "_base_error.html" %}
+
+{% block page-title %}Error 403 - Permission Denied!{% endblock %}
+
+{% block content %}
+
+    <div class="centered-box">
+        <h1 class="error-code centered">403</h1>
+
+        <p>Permission Denied!<br />Ja, es gibt jemanden mit mehr Rechten.</p>
+
+        <img src="{{ STATIC_URL }}img/sticker-hee.png" class="centered" />
+
+        <p><a href="/">&lt;- zurück</a></p>
+    </div>
+
+{% endblock %}

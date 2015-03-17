@@ -1,0 +1,10 @@
+.idea
+*.pyc
+*.sqlite3
+*.json
+static/*
+media/*
+confederation_logos
+*.pid
+run
+*.log

@@ -1,0 +1,181 @@
+{% extends "my/parents/my_layout.html" %}
+
+{% load humanize economy_tags %}
+
+{% block tabtitle %}Job Statistik{% endblock %}
+
+{% block headline %}
+    <h1>Job Statistik <small>{{ request.player.name }}</small></h1>
+{% endblock %}
+
+{% block add_js %}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.1/Chart.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            function printLabels(destination, dataset) {
+                var count = dataset.length;
+                for (var i = 0; i<count; i++) {
+                    var row = dataset[i];
+                    var span = document.createElement('span');
+                    span.className = 'label';
+                    span.textContent = row.label;
+                    span.setAttribute('style', 'margin: 2px; background-color: ' + row.pointColor);
+
+                    destination.append(span);
+
+                    if (i % 5 == 0) {
+                        destination.append(document.createElement("br"));
+                    }
+                }
+            }
+
+
+            var options = {
+                showTooltips: true,
+
+                // Array - Array of string names to attach tooltip events
+                tooltipEvents: ["mousemove", "touchstart", "touchmove"],
+
+                // String - Tooltip background colour
+                tooltipFillColor: "rgba(0,0,0,0.8)",
+
+                // String - Tooltip label font declaration for the scale label
+                tooltipFontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+
+                // Number - Tooltip label font size in pixels
+                tooltipFontSize: 14,
+
+                // String - Tooltip font weight style
+                tooltipFontStyle: "normal",
+
+                // String - Tooltip label font colour
+                tooltipFontColor: "#fff",
+
+                // String - Tooltip title font declaration for the scale label
+                tooltipTitleFontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+
+                // Number - Tooltip title font size in pixels
+                tooltipTitleFontSize: 14,
+
+                // String - Tooltip title font weight style
+                tooltipTitleFontStyle: "bold",
+
+                // String - Tooltip title font colour
+                tooltipTitleFontColor: "#fff",
+
+                // Number - pixel width of padding around tooltip text
+                tooltipYPadding: 6,
+
+                // Number - pixel width of padding around tooltip text
+                tooltipXPadding: 6,
+
+                // Number - Size of the caret on the tooltip
+                tooltipCaretSize: 8,
+
+                // Number - Pixel radius of the tooltip border
+                tooltipCornerRadius: 6,
+
+                // Number - Pixel offset from point x to tooltip edge
+                tooltipXOffset: 10,
+
+                // String - Template string for single tooltips
+                tooltipTemplate: "<%if (label)&#123;%><%=label%>: <%&#125;%><%= value %>",
+
+                // String - Template string for single tooltips
+                multiTooltipTemplate: "<%= value %>",
+
+                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++)&#123;%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label)&#123;%><%=datasets[i].label%><%&#125;%></li><%&#125;%></ul>"
+
+            };
+
+            /* personal chart */
+            var data = {};
+            data = {{ chart_data|safe }};
+            var el = document.getElementById("myChart");
+            var width = $(el).parent().width();
+            el.width = width;
+            var ctx = el.getContext("2d");
+
+            var myLineChart = new Chart(ctx).Line(data, options);
+
+            var labels = $(el).parent().find('.labels');
+            printLabels(labels, data.datasets);
+
+            options.datasetFill = false;
+
+            /* totals */
+            var total_data = {};
+            total_data = {{ chart_total_data|safe }};
+            var el = document.getElementById("total_chart");
+            var width = $(el).parent().width();
+            el.width = width;
+            var ctx = el.getContext("2d");
+
+            var total = new Chart(ctx).Line(total_data, options);
+
+            var labels = $(el).parent().find('.total-labels');
+            printLabels(labels, total_data.datasets);
+
+            /* player comparison one */
+            var pc1_data = {};
+            pc1_data = {{ chart_two_data|safe }};
+            var el = document.getElementById("second_chart");
+            var width = $(el).parent().width();
+            el.width = width;
+            var ctx = el.getContext("2d");
+
+            var myLineChart2 = new Chart(ctx).Line(pc1_data, options);
+
+            var labels = $(el).parent().find('.second-labels');
+            printLabels(labels, pc1_data.datasets);
+
+            /* player comparison two */
+            var pc2_data = {};
+            pc2_data = {{ chart_three_data|safe }};
+            var el = document.getElementById("third_chart");
+            var width = $(el).parent().width();
+            el.width = width;
+            var ctx = el.getContext("2d");
+
+            var myLineChart3 = new Chart(ctx).Line(pc2_data, options);
+
+            var labels = $(el).parent().find('.third-labels');
+            printLabels(labels, pc1_data.datasets);
+
+        })();
+    </script>
+{% endblock %}
+
+{% block tabcontent %}
+
+    <h3>Rekrutierung / Produktion <small>{{ request.player.name }}, letzte Woche</small></h3>
+
+    <div class="labels text-right col-lg-12"></div>
+
+    <canvas id="myChart" width="400" height="400"></canvas>
+
+    <hr />
+
+    <h3>Rekrutierung / Produktion <small>Total, letzte Woche</small></h3>
+
+    <div class="total-labels text-right col-lg-12"></div>
+
+    <canvas id="total_chart" width="400" height="400"></canvas>
+
+    <hr />
+
+    <h3>Produktion <small>Vergleich Spieler, letzte Woche</small></h3>
+
+    <div class="second-labels text-right col-lg-12"></div>
+
+    <canvas id="second_chart" width="400" height="400"></canvas>
+
+    <hr />
+
+    <h3>Rekrutierung <small>Vergleich Spieler, letzte Woche</small></h3>
+
+    <div class="third-labels text-right col-lg-12"></div>
+
+    <canvas id="third_chart" width="400" height="400"></canvas>
+
+{% endblock %}

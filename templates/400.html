@@ -1,0 +1,17 @@
+{% extends "_base_error.html" %}
+
+{% block page-title %}Error 400 - Bad Request{% endblock %}
+
+{% block content %}
+
+    <div class="centered-box">
+        <h1 class="error-code centered">400</h1>
+
+        <p>Bad Request!<br />Alter, willst du mich verarschen? Noch so 'ne Aktion und ich zeige Dir wer "bad" ist.</p>
+
+        <img src="{{ STATIC_URL }}img/sticker-bear1.png" class="centered" />
+
+        <p><a href="/">&lt;- zurück</a></p>
+    </div>
+
+{% endblock %}

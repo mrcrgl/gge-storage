@@ -1,0 +1,57 @@
+{% if attack_list %}
+    <div class="panel panel-danger">
+        <div class="panel-heading">
+            <span class="badge pull-right">Last {{ attack_list.count }}</span>
+
+            <h3 class="panel-title">Angriffe</h3>
+        </div>
+        <div class="panel-body">
+            {% for attack in attack_list %}
+                <div class="text-center">
+                    <strong>{{ attack.get_type_display }}</strong>
+                    <small>{{ attack.to_castle.kingdom.name }}</small>
+                    <br/>
+                    <small>
+                        {% if attack.in_future %}
+                            Einschlag in {{ attack.get_time_until }}
+                        {% else %}
+                            Einschlag am {{ attack.weft }}
+                        {% endif %}
+                    </small>
+                </div>
+                <div class="pull-right">
+                    <a href="{{ attack.to_player.get_absolute_url }}"><i
+                            class="glyphicon glyphicon-user"></i> {{ attack.to_player }}</a>
+                    {% if attack.to_castle %}
+                        <br/>
+                        <a href="{{ attack.to_castle.get_absolute_url }}"><i
+                                class="glyphicon glyphicon-tower"></i> {{ attack.to_castle }}</a><br/>
+                        {{ attack.to_castle.pos_x }} / {{ attack.to_castle.pos_y }}
+                    {% endif %}
+                </div>
+                <div class="">
+                    <a href="{{ attack.from_player.get_absolute_url }}"><i
+                            class="glyphicon glyphicon-user"></i> {{ attack.from_player }}</a>
+                    {% if attack.from_castle %}
+                        <br/>
+                        <a href="{{ attack.from_castle.get_absolute_url }}"><i
+                                class="glyphicon glyphicon-tower"></i> {{ attack.from_castle }}</a><br/>
+                        {{ attack.from_castle.pos_x }} / {{ attack.from_castle.pos_y }}
+                    {% endif %}
+                </div>
+                <br class="clearfix"/>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-{% if attack.in_future %}danger{% else %}warning{% endif %}"
+                         role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"
+                         style="width: {{ attack.get_progress_percentage }}%">
+                        <span class="sr-only">{{ attack.weft|timeuntil }}</span>
+                    </div>
+                </div>
+
+                {% if not forloop.last %}
+                    <hr/>{% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+{% endif %}

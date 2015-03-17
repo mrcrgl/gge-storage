@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block meta-description %}Toolchain for Goodgame Empire four Kingdoms{% endblock %}">
+    <meta name="author" content="M">
+    {% load static commit_id cms_tags sekizai_tags %}
+
+    <meta name="commit_id" content="{% commit_id %}">
+
+    <title>{% block pagetitle %}weeha (funky){% endblock %} | The Tool</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ STATIC_URL }}css/bootstrap.min.css?{% commit_id %}" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="{{ STATIC_URL }}css/bootstrap-theme.min.css?{% commit_id %}" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/tablesorter.theme.bootstrap.css?{% commit_id %}" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/application.css?{% commit_id %}" rel="stylesheet">
+    {% render_block "css" %}
+
+    {% comment %}
+    <!-- Piwik -->
+    <script type="text/javascript">
+      var _paq = _paq || [];
+      _paq.push(["trackPageView"]);
+      _paq.push(["enableLinkTracking"]);
+
+      (function() {
+        var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik.bam.st/";
+        _paq.push(["setTrackerUrl", u+"piwik.php"]);
+        _paq.push(["setSiteId", "3"]);
+        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+      })();
+    </script>
+    <!-- End Piwik Code -->
+    {% endcomment %}
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-51277909-5', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+
+</head>
+
+<body>
+{% cms_toolbar %}
+{% include "partials/navigation_top.html" %}
+
+<div class="container-fluid">
+    {% block body %}
+        {% placeholder "main" %}
+    {% endblock %}
+</div>
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://code.jquery.com/jquery-1.10.2.min.js?{% commit_id %}"></script>
+<script src="{{ STATIC_URL }}js/bootstrap.min.js?{% commit_id %}"></script>
+<script src="{{ STATIC_URL }}js/jquery.tablesorter.min.js?{% commit_id %}"></script>
+<script src="{{ STATIC_URL }}js/jquery.tablesorter.widgets.js?{% commit_id %}"></script>
+<script src="{{ STATIC_URL }}js/typeahead.bundle.min.js?{% commit_id %}"></script>
+<script src="{{ STATIC_URL }}js/application.js?{% commit_id %}"></script>
+{% render_block "js" %}
+{% block add_js %}{% endblock %}
+</body>
+</html>

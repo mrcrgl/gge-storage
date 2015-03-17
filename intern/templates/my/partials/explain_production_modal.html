@@ -1,0 +1,50 @@
+<div class="modal fade" id="explain-production-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Wie funktionieren Produktions- oder Rekrutier-Jobs?</h4>
+            </div>
+            <div class="modal-body">
+                <p>Ein Produktions- oder Rekrutier-Job ist prinzipiell das Gleiche.
+                    Es wird hier nur dazwischen unterschieden um die Übersichtlichkeit zu steigern.</p>
+
+                <h5>Wann wird ein Job abgearbeitet?</h5>
+                <p>
+                    Für jeden Account gibt es eine Liste verschiedener Jobs. Diese haben eine Sperrzeit (Datum und Uhrzeit).
+                    Es wird stets der Job mit der ältesten in der Vergangenheit liegenden Sperrzeit ausgeführt.
+                </p>
+
+                <h5>Welche Bedingungen müssen erfüllt sein?</h5>
+                <p>
+                    Folgende Dinge werden überprüft:
+                    <ul>
+                        <li>Ist Account verfügbar?</li>
+                        <li>Ist Spieler AFK?</li>
+                        <li>Ist genug Gold vorhanden? (falls eingestellt) *1</li>
+                        <li>Ist genug Holz vorhanden? (falls eingestellt) *1</li>
+                        <li>Ist genug Stein vorhanden? (falls eingestellt) *1</li>
+                        <li>Ist in der Burg eine positive Nahrungsbilanz?</li>
+                        <li>Ist die maximale Anzahl erreicht?</li>
+                    </ul>
+
+                    <i>*1) <a href="{% url "intern:my_economy" %}">Wirtschaftsinformationen</a> dürfen nicht älter als
+                        15 Minuten sein. Bei alten Daten werden diese mit einem roten Warndreieck markiert.</i>
+                </p>
+
+                <h5>Wann wird ein Job erneut bearbeitet?</h5>
+                <p>
+                    Wurde ein Job bearbeitet, egal ob erfolgreich oder nicht, wird dessen Sperrzeit auf in 30 Minuten gesetzt.
+                    Mit aktivem Burst mode verringert sich dieser Wert auf 5 Minuten.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-remove-sign"></span> Schließen
+                </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div><!-- /.modal -->

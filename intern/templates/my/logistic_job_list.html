@@ -1,0 +1,62 @@
+{% extends "my/parents/my_layout.html" %}
+
+{% load humanize %}
+
+{% block tabtitle %}Logistik{% endblock %}
+
+{% block headline %}
+    <h1>Logistik <small>{{ request.player.name }}</small></h1>
+{% endblock %}
+
+{% block tabcontent %}
+    <form action="." method="POST">{% csrf_token %}
+
+
+        <div>
+            <a href="new" class="btn btn-default pull-right"><span class="glyphicon glyphicon-edit"></span> Neuen Job erstellen</a>
+
+            <div class="input-group pull-left">
+                <select name="action" class="form-control">
+                    <option value="">------------</option>
+                    <option value="set_active">Aktiv</option>
+                    <option value="set_inactive">Inaktiv</option>
+                    <option value="clone">Kopieren</option>
+                    <option value="delete">Löschen</option>
+                </select>
+            </div>
+            <div class="input-group" style="padding-left: 10px;">
+                <button class="form-control btn btn-success"><span class="glyphicon glyphicon-play"></span> Ausführen</button>
+            </div>
+            <br class="clearfix" />
+        </div>
+
+        <table class="table">
+        <thead>
+        <tr>
+            <th><input type="checkbox" class="select-all" name="ids" id="checkall" value="all" /></th>
+            <th>Burg</th>
+            <th>Ziel</th>
+            <th>Rohstoff</th>
+            <th>Mind. verf.</th>
+            <th>Zuletzt gelaufen</th>
+            <th>Aktiv</th>
+            <th><span class="glyphicon glyphicon-edit"></span></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for object in object_list %}
+        <tr class="{{ object.is_active|yesno:'success,warning' }}">
+            <td><input type="checkbox" name="ids" value="{{ object.pk }}" /></td>
+            <td><a href="{{ object.castle.get_absolute_url }}">{{ object.castle }}</a></td>
+            <td><a href="{{ object.receiver.get_absolute_url }}" data-toggle="tooltip" data-placement="top" title="Player: {{ object.receiver.player.name }}">{{ object.receiver }}</a></td>
+            <td>{{ object.get_resource_display }}</td>
+            <td>{{ object.resource_limit|default_if_none:'-/-'|intcomma }}</td>
+            <td>{{ object.last_succeed|timesince }}</td>
+            <td>{{ object.is_active|yesno:'an,aus' }}</td>
+            <td><a href="{{ object.pk }}"><span class="glyphicon glyphicon-edit"></span></a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+    </form>
+{% endblock %}

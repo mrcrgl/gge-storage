@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block page-title %}{% endblock %}</title>
+
+    {% load static %}
+
+    <link href="{% static "css/application.css" %}" rel="stylesheet">
+    <link href="{% static "css/error.css" %}" rel="stylesheet">
+</head>
+<body>
+
+{% block content %}{% endblock %}
+
+</body>
+</html>

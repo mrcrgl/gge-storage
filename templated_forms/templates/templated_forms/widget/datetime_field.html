@@ -1,0 +1,15 @@
+{% extends "templated_forms/enclosure/default.html" %}
+
+{% block form_widget_content %}
+
+<label for="id_{{ field.name }}">{{ field.label }}</label>
+<div id="capsule_{{ field.name }}" class="input-group date datetime-picker">
+    <input data-format="dd.MM.yyyy hh:mm:ss" type="text"
+           class="form-control" id="id_{{ field.name }}" name="{{ field.html_name }}"
+           value="{% if field.value|stringformat:"s" == field.value %}{{ field.value }}{% else %}{% if notime %}{{ field.value|date:"SHORT_DATE_FORMAT" }}{% else %}{{ field.value|date:"SHORT_DATETIME_FORMAT" }}{% endif %}{% endif %}" />
+    <span class="input-group-addon">
+      <span class="glyphicon glyphicon-calendar"></span>
+    </span>
+</div>
+
+{% endblock %}

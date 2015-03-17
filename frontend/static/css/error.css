@@ -1,0 +1,21 @@
+body {
+    background-color: black;
+    color: lightgrey;
+}
+
+
+div.centered-box {
+    position: absolute;
+    width: 40%;
+    height: 20%;
+    margin-left: 30%;
+    text-align: center;
+}
+
+h1.error-code {
+    font-size: 300%;
+}
+
+.centered {
+    margin: 0 auto;
+}

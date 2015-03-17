@@ -1,0 +1,113 @@
+{% extends "layout_intern.html" %}
+
+{% load humanize map_tags %}
+
+{% block headline %}
+    <span class="pull-right">
+        updated {{ alliance.updated|timesince }} ago<br />
+        <a class="btn btn-small btn-success" href="{% url "intern:alliance_detail" pk=alliance.pk %}">zurück</a>
+    </span>
+    <h1>{{ alliance.name }} <small><span class="label label-info">{{ alliance.level }}</span> {{ alliance.players.count }} Members</small></h1>
+{% endblock %}
+
+{% block pagetitle %}
+    Allianz: {{ alliance.name }}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="{% url "intern:alliance_list" %}">Alliances</a></li>
+    <li class="active">{{ alliance.name }}</li>
+{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-xs-12">
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <select onchange="location.href=this.value" class="form-control input-sm">
+                        {% for kdom in kingdom_list %}
+                        <option value="{% url "intern:alliance_neighborhood" pk=alliance.id kingdom_id=kdom.pk %}" {% if kdom.pk == kingdom.pk %}selected{% endif %}>{{ kdom.name }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <select id="map-zoom">
+                        <option value="50">Zoom 50%</option>
+                        <option value="75">Zoom 75%</option>
+                        <option value="100" selected>Zoom 100%</option>
+                        <option value="125">Zoom 125%</option>
+                        <option value="150">Zoom 150%</option>
+                        <option value="175">Zoom 175%</option>
+                        <option value="250">Zoom 250%</option>
+                        <option value="500">Zoom 500%</option>
+                    </select>
+
+                    <p class="text-info">Mit Doppelklick auf das Klötzchen kommst auf die Burgseite.</p>
+                </div>
+                <div class="col-sm-6">
+                    <ul class="legend legend-horizontal">
+                        <li class="type-1">Hauptburg</li>
+                        <li class="type-4">Außenposten</li>
+                        <li class="type-10">Rohstoff Dorf</li>
+                    </ul>
+                    <br />
+
+                    <ul class="legend legend-horizontal">
+                        <li class="type-1 yours">Deine Hauptburg</li>
+                        <li class="type-4 yours">Deine Außenposten</li>
+                        <li class="type-10 yours">Dein Rohstoff Dorf</li>
+                    </ul>
+                    <br />
+
+                    <ul class="legend legend-horizontal">
+                        <li class="highlight">Des gleichen Spielers</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="neighborhood-container">
+                <div class="neighborhood-outer">
+                    <div class="ruler ruler-top">
+                        <ul>
+                            {% for ruler_step in ruler_steps %}
+                                <li>{{ ruler_step }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="neighborhood">
+
+                        {% for castle in castle_list %}
+                            <div class="castle type-{{ castle.type }}{% if request.player.pk == castle.player_id %} yours{% endif %}"
+                                 player="{{ castle.player_id }}"
+                                 style="top: {{ castle.pos_y|add:"-5" }}px;left: {{ castle.pos_x|add:"-5" }}px;"
+                                 data-toggle="tooltip" data-placement="top"
+                                 data-html="true"
+                                 title="
+                                 <b>{{ castle.name }}</b><br />
+                                 {{ castle.player.name }}<br /><hr />
+                                 Typ: {{ castle.get_type_display }}<br />
+                                 Level: {{ castle.player.level }}<br />
+                                 Rang: {{ castle.player.get_alliance_rank_display }}<br />
+                                 Pos: x={{ castle.pos_x }} y={{ castle.pos_y }}"
+                                 ondblclick="location.href='{{ castle.get_absolute_url }}';">
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="ruler ruler-left">
+                    <ul>
+                        {% for ruler_step in ruler_steps %}
+                            <li>{{ ruler_step }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div style="clear:both;"></div>
+
+        </div>
+    </div>
+
+{% endblock %}

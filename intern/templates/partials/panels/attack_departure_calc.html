@@ -1,0 +1,62 @@
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title">Angriffzeiterrechnung</h3>
+    </div>
+    <div class="panel-body">
+        <form class="form-horizontal attack-time-calculator" action="" onsubmit="javascript:void(0);">
+            <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">Ankunftszeit</label>
+
+                <div class="col-sm-2">
+                    <select name="arrival-hour" class="form-control">
+                        {% for i in "xxxxxxxxxxxxxxxxxxxxxxxx" %}
+                            <option value="{{ forloop.counter0 }}">{{ forloop.counter0 }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-sm-2">
+                    <select name="arrival-minute" class="form-control">
+                        <option value="00">00</option>
+                        <option value="15">15</option>
+                        <option value="30">30</option>
+                        <option value="45">45</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">Laufzeit</label>
+
+                <div class="col-sm-2">
+                    <select name="duration-hours" class="form-control">
+                        {% for i in "xxxxxxxxxxxxxxxxxxxxxxxx" %}
+                            <option value="{{ forloop.counter0 }}">{{ forloop.counter0 }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-sm-2">
+                    <select name="duration-minutes" class="form-control">
+                        {% for i in "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" %}
+                            <option value="{{ forloop.counter0 }}">{{ forloop.counter0 }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-sm-2">
+                    <select name="duration-seconds" class="form-control">
+                        {% for i in "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" %}
+                            <option value="{{ forloop.counter0 }}">{{ forloop.counter0 }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">Startzeit</label>
+
+                <div class="col-sm-6">
+                    <input type="text" name="departure" class="form-control" disabled/>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

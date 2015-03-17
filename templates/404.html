@@ -1,0 +1,17 @@
+{% extends "_base_error.html" %}
+
+{% block page-title %}Error 404 - Page not found{% endblock %}
+
+{% block content %}
+
+    <div class="centered-box">
+        <h1 class="error-code centered">404</h1>
+
+        <p>Kann die Seite nicht finden... Letztens war sie noch da... Tut mir echt leid...</p>
+
+        <img src="{{ STATIC_URL }}img/sticker-bear2.png" class="centered" />
+
+        <p><a href="/">&lt;- zurück</a></p>
+    </div>
+
+{% endblock %}

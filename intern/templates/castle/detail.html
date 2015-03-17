@@ -1,0 +1,161 @@
+{% extends "layout_intern.html" %}
+
+{% load humanize map_tags %}
+
+{% block headline %}
+    <span class="pull-right">updated {{ castle.updated|timesince }} ago</span>
+    <h1>{{ castle.name }}
+        <small>
+            {% if castle.player.is_ruin %}<span class="label label-danger">Ruine</span>{% endif %}
+            <span class="label label-info">{{ castle.kingdom.name }}</span>
+            <span class="label label-warning">{{ castle.pos_x }} / {{ castle.pos_y }}</span>
+        </small>
+    </h1>
+{% endblock %}
+
+{% block pagetitle %}
+    {{ castle.get_type_display }}: {{ castle.name }}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="{% url "intern:player_list" %}">Players</a></li>
+    <li><a href="{% url "intern:player_detail" pk=castle.player.pk %}">{{ castle.player.name }}</a></li>
+    <li class="active">{{ castle.name }}</li>
+{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">
+                    Alliance member castles <small>Close enough for defence, distance < 100</small>
+                    <span class="badge pull-right">{{ castle.alliance_castles.count }}</span>
+                </h3>
+              </div>
+              <div class="panel-body table-responsive {% if castle.alliance_castles.count %}unbordered{% endif %}">
+                {% if castle.alliance_castles.count %}
+                <table class="table tablesorter">
+                    <thead>
+                        <tr>
+                            <th>Castle</th>
+                            <th>Player</th>
+                            <th>Level</th>
+                            <th>X / Y</th>
+                            <th>Distance</th>
+                            <th>Updated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for a_castle in castle.alliance_castles %}
+                        <tr>
+                            <td><a href="{{ a_castle.get_absolute_url }}">{{ a_castle.name }}</a></td>
+                            <td><a href="{{ a_castle.player.get_absolute_url }}">{{ a_castle.player }}</a></td>
+                            <td>{{ a_castle.player.level }}</td>
+                            <td>{{ a_castle.pos_x }} / {{ a_castle.pos_y }}</td>
+                            <td>{{ a_castle|distance_to:castle }}</td>
+                            <td>{{ a_castle.updated|timesince }} ago</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="alert alert-info">
+                    <p>No alliance castles close to this one.</p>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            {% if castle.player.alliance %}
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Alliance</h3>
+              </div>
+              <div class="panel-body">
+                <dl class="dl-horizontal">
+                    <dt>Name</dt>
+                    <dd><a href="{{ castle.player.alliance.get_absolute_url }}">{{ castle.player.alliance.name }}</a></dd>
+                    <dt>Members</dt>
+                    <dd>{{ castle.player.alliance.players.count }}</dd>
+                </dl>
+              </div>
+            </div>
+            {% endif %}
+
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Player</h3>
+              </div>
+              <div class="panel-body">
+                <dl class="dl-horizontal">
+                    <dt>Name</dt>
+                    <dd><a href="{{ castle.player.get_absolute_url }}">{{ castle.player.name }}</a></dd>
+                    <dt>Level</dt>
+                    <dd>{{ castle.player.level }}</dd>
+                    <dt>Bums</dt>
+                    <dd>{{ castle.player.get_dangerously_display }}</dd>
+                </dl>
+              </div>
+            </div>
+
+            {% if request.player %}
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Attack distance</h3>
+              </div>
+              <div class="panel-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Castle</th>
+                            <th>Distance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for my_castle in request.player.castles.all %}
+                        {% if my_castle.kingdom_id == castle.kingdom_id and my_castle.type in my_castle.TYPE_WITH_WARRIORS %}
+                            <tr>
+                                <td><a href="{{ my_castle.get_absolute_url }}">{{ my_castle.name }}</a></td>
+                                <td>{{ castle|distance_to:my_castle }}</td>
+                            </tr>
+                        {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+              </div>
+            </div>
+            {% endif %}
+
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">History of {{ castle.pos_x }} / {{ castle.pos_y }}</h3>
+              </div>
+              <div class="panel-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Castle</th>
+                            <th>Player</th>
+                            <th>Letztes Upd.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% castles_by_pos castle as before_heres %}
+                        {% for my_castle in before_heres %}
+                            <tr>
+                                <td><a href="{{ my_castle.get_absolute_url }}">{{ my_castle.name }}</a></td>
+                                <td><a href="{{ my_castle.player.get_absolut_url }}">{{ my_castle.player.name }}</a></td>
+                                <td>{{ my_castle.updated|timesince }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+              </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

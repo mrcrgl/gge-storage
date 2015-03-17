@@ -1,0 +1,18 @@
+{% extends "base_layout.html" %}
+{% load humanize %}
+
+{% block pagetitle %}
+    Non Player Burgen
+{% endblock %}
+
+{% block content %}
+
+    <h1>Hallo Welt</h1>
+
+    <ul>
+    {% for npc in npc_list %}
+        <li><a href="{{ npc.get_absolute_url }}">{{ npc }}</a></li>
+    {% endfor %}
+    </ul>
+
+{% endblock %}

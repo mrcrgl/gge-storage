@@ -1,0 +1,15 @@
+{% extends "templated_forms/enclosure/default.html" %}
+
+{% block form_widget_content %}
+    <label for="id_{{ field.name }}">{{ field.label }}{% if field.is_required %} *{% endif %}</label>
+        <select name="{{ field.html_name }}" class="form-control" id="id_{{ field.name }}" {% if multiple %}multiple{% endif %}>
+            {% for object in field.field.choices %}
+                <option value="{{ object.0 }}" {% if object.0 in field.value or field.value == object.0 %}selected{% endif %}>{{ object.1 }}</option>
+            {% endfor %}
+        </select>
+
+        {% if field.help_text %}<span class="help-block">{{ field.help_text }}</span>{% endif %}
+        {% for message in field.errors %}
+            <p class="help-block">{{ message }}</p>
+        {% endfor %}
+{% endblock %}

@@ -1,0 +1,322 @@
+@import url(http://fonts.googleapis.com/css?family=PT+Mono);
+
+body {
+    padding-top: 70px;
+}
+
+body {
+    font-family: 'PT Mono' !important;
+}
+
+body {
+    background-color: #f8f8f8;
+}
+
+.map {
+    overflow-style: scrollbar;
+    display: inline-block;
+    font-size: 0pt;
+}
+
+.map.map-x {
+    width: 5px;
+    font-size: 0pt;
+}
+
+.map.map-y {
+    width: 5px;
+    height: 5px;
+    background-color: #d6e9c6;
+    font-size: 0pt;
+}
+.map .area-population-none {
+    background-color: #d6e9c6;
+}
+
+.map .area-population-less {
+    background-color: #8a6d3b;
+}
+
+.map .area-population-middle {
+    background-color: #d58512;
+}
+
+.map .area-population-high {
+    background-color: #c9302c;
+}
+
+.map .matches {
+    background-color: #c9302c;
+}
+
+.map .prev-matches {
+    background-color: lightgray;
+}
+
+.list-helper .pagination {
+    margin: 0;
+}
+
+.unbordered {
+    padding: 0;
+}
+
+.typeahead,
+.tt-query,
+.tt-hint {
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.428571429;
+    color: #555;
+    vertical-align: middle;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+    -webkit-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+.twitter-typeahead {
+    width: 100%;
+}
+
+.typeahead {
+  background-color: #fff;
+}
+
+.tt-query {
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.tt-hint {
+  color: #999
+}
+
+.tt-dropdown-menu {
+  width: 422px;
+  margin-top: 12px;
+  padding: 8px 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 8px;
+     -moz-border-radius: 8px;
+          border-radius: 8px;
+  -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+     -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+          box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+
+.tt-suggestion {
+  padding: 3px 20px;
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.tt-suggestion.tt-cursor {
+  color: #fff;
+  background-color: #0097cf;
+
+}
+
+.tt-suggestion p {
+  margin: 0;
+}
+
+.neighborhood {
+    width: 1400px;
+    height: 1400px;
+    position: relative;
+    background-color: transparent;
+    background-image: linear-gradient(
+        0deg,
+        transparent 24%,
+        rgb(125, 125, 125) 25%,
+        rgb(125, 125, 125) 26%,
+        transparent 27%,
+        transparent 74%,
+        rgb(125, 125, 125) 75%,
+        rgb(125, 125, 125) 76%,
+        transparent 77%,
+        transparent
+    ),
+    linear-gradient(
+        90deg,
+        transparent 24%,
+        rgb(125, 125, 125) 25%,
+        rgb(125, 125, 125) 26%,
+        transparent 27%,
+        transparent 74%,
+        rgb(125, 125, 125) 75%,
+        rgb(125, 125, 125) 76%,
+        transparent 77%,
+        transparent
+    );
+    background-size: 50px 50px;
+    background-position: 19px 7px;
+
+    /*background: url("../img/map_background.png") repeat;*/
+}
+
+.neighborhood > .castle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    border: 1px solid #c0c0c0;
+    background-color: white;
+    overflow: hidden;
+}
+
+.neighborhood > .castle.type-12 { /* CASTLE */
+    background-color: orange;
+}
+
+.neighborhood > .castle.type-1 { /* HB */
+    background-color: orange;
+}
+
+.neighborhood > .castle.type-4 { /* AP */
+    background-color: cadetblue;
+}
+
+.neighborhood > .castle.type-10 { /* RSD */
+    background-color: yellowgreen;
+}
+
+.neighborhood > .castle.type-4.yours,
+.neighborhood > .castle.type-10.yours { /* RSD */
+    background-color: red;
+}
+
+.neighborhood > .castle.type-1.yours,
+.neighborhood > .castle.type-12.yours{ /* HB */
+    background-color: darkred;
+}
+
+.neighborhood > .castle.type-1.highlight,
+.neighborhood > .castle.type-4.highlight,
+.neighborhood > .castle.type-10.highlight,
+.neighborhood > .castle.type-12.highlight {
+    background-color: #ffff00;
+}
+
+.neighborhood > .castle:hover {
+    z-index: 10;
+}
+
+.neighborhood-container {
+    float: right;
+    width: 100%;
+}
+
+.neighborhood-outer {
+    overflow: scroll;
+    margin-left: 40px;
+}
+
+.ruler.ruler-left {
+    float: right;
+    height: 100%;
+    width: 40px;
+    margin-right: -40px;
+    /*border: 1px dashed green;*/
+    overflow: scroll;
+    margin-top: 40px;
+}
+
+.ruler.ruler-top {
+    /*border: 1px dashed green;*/
+    height: 40px;
+    width: 1400px;
+}
+
+.ruler > ul {
+    list-style: none;
+    margin: 0;
+    float: left;
+    padding-left: 0;
+}
+
+.ruler > ul > li {
+    width: 20px;
+    position: relative;
+    display: block;
+}
+
+.ruler-top > ul {
+    width: 100%;
+}
+
+.ruler-top > ul > li {
+    width: 100px;
+    float: left;
+    border-left: 1px solid silver;
+    height: 40px;
+}
+
+.ruler-left > ul > li {
+    width: 40px;
+    height: 100px;
+    border-top: 1px solid silver;
+}
+
+
+span.legend {
+    width: 15px;
+    height: 15px;
+    padding: 3px;
+}
+
+ul.legend-horizontal > li {
+    float: left;
+    padding: 0 5px 0 5px;
+}
+
+ul.legend > li {
+    list-style: none;
+    margin: 0 0 5px 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.legend>.type-1,
+.legend>.type-12{
+    border-left: 15px solid orange;
+    border-bottom: 2px solid orange;
+}
+
+.legend>.type-4 {
+    border-left: 15px solid cadetblue;
+    border-bottom: 2px solid cadetblue;
+}
+
+.legend>.type-10 {
+    border-left: 15px solid yellowgreen;
+    border-bottom: 2px solid yellowgreen;
+}
+
+.legend>.type-4.yours,
+.legend>.type-10.yours {
+    border-left: 15px solid red;
+    border-bottom: 2px solid red;
+}
+
+.legend>.type-1.yours,
+.legend>.type-12.yours {
+    border-left: 15px solid darkred;
+    border-bottom: 2px solid darkred;
+}
+
+.legend>.highlight {
+    border-left: 15px solid #ffff00;
+    border-bottom: 2px solid #ffff00;
+}

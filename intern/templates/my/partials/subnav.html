@@ -1,0 +1,40 @@
+{% load active_navigation %}
+
+{% url "intern:my_economy" as my_economy_link %}
+{% url "intern:my_recruitment_job_list" as my_recruitment_job_list_link %}
+{% url "intern:my_production_job_list" as my_production_job_list_link %}
+{% url "intern:my_logistic_job_list" as my_logistic_job_list_link %}
+{% url "intern:my_job_statistic" as my_job_statistic_link %}
+{% url "intern:my_push" as my_push_link %}
+
+
+<ul class="nav nav-pills nav-stacked">
+    {% if perms.gge_proxy_manager.add_castleeconomy %}
+    <li class="{% is_active my_economy_link %}">
+        <a href="{{ my_economy_link }}"><span class="glyphicon glyphicon-book"></span> Wirtschaft</a>
+    </li>
+    {% endif %}
+    {% if perms.gge_proxy_manager.add_productionjob or perms.gge_proxy_manager.add_logisticjob %}
+    <li class="{% is_active my_job_statistic_link %}">
+        <a href="{{ my_job_statistic_link }}"><span class="glyphicon glyphicon-signal"></span> Job Statistik</a>
+    </li>
+    {% endif %}
+    {% if perms.gge_proxy_manager.add_productionjob %}
+    <li class="{% is_active my_recruitment_job_list_link %}">
+        <a href="{{ my_recruitment_job_list_link }}"><span class="glyphicon glyphicon-user"></span> Jobs: Rekrutierung</a>
+    </li>
+    <li class="{% is_active my_production_job_list_link %}">
+        <a href="{{ my_production_job_list_link }}"><span class="glyphicon glyphicon-wrench"></span> Jobs: Produktion</a>
+    </li>
+    {% endif %}
+    {% if perms.gge_proxy_manager.add_logisticjob %}
+    <li class="{% is_active my_logistic_job_list_link %}">
+        <a href="{{ my_logistic_job_list_link }}"><span class="glyphicon glyphicon-barcode"></span> Jobs: Logistik</a>
+    </li>
+    {% endif %}
+    {% if perms.gge_proxy_manager.add_logisticjob %}
+    <li class="{% is_active my_push_link %}">
+        <a href="{{ my_push_link }}"><span class="glyphicon glyphicon-phone"></span> Push Service</a>
+    </li>
+    {% endif %}
+</ul>

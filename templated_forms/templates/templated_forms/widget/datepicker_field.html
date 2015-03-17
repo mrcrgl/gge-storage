@@ -1,0 +1,19 @@
+{% extends "templated_forms/enclosure/default.html" %}
+
+{% block form_widget_content %}
+
+<label for="id_{{ field.name }}">{{ field.label }}</label>
+    <div class="input-group {% if widget.mode == "date" %}enable-date-picker{% endif %}{% if widget.mode == "datetime" %}enable-datetime-picker{% endif %}">
+        <input type="text" class="form-control" name="{{ field.html_name }}" class="form-control" id="id_{{ field.name }}"
+           placeholder="{% if field.initial %}{{ field.initial }}{% else %}tt.mm.jjjj{% endif %}"
+           {% if widget.mode == "date" %}data-format="dd.MM.yyyy"{% endif %}
+           {% if widget.mode == "datetime" %}data-format="dd.MM.yyyy hh:mm:ss"{% endif %}
+           value="{% if widget.mode == "datetime" %}{{ field.value|date:"SHORT_DATETIME_FORMAT" }}{% else %}{{ field.value|date:"SHORT_DATE_FORMAT" }}{% endif %}" data-provide="datepicker">
+        <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+    </div>
+    {% if field.help_text %}<span class="help-block">{{ field.help_text }}</span>{% endif %}
+    {% for message in field.errors %}
+        <p class="help-block">{{ message }}</p>
+    {% endfor %}
+
+{% endblock %}

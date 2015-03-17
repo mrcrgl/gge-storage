@@ -1,0 +1,30 @@
+{% extends "confederation/parents/confederation_layout.html" %}
+
+{% block tab_content %}
+    <div class="row">
+    <div class="col-sm-12">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Player</th>
+                <th>Rank</th>
+                <th>Alliance</th>
+                <th>Level</th>
+                <th>Ehre</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for member in member_list %}
+            <tr>
+                <td><a href="{{ member.get_absolute_url }}">{{ member.name }}</a></td>
+                <td>{{ member.get_alliance_rank_display }}</td>
+                <td><a href="{{ member.alliance.get_absolute_url }}">{{ member.alliance.name }}</a></td>
+                <td>{{ member.level }}</td>
+                <td>{{ member.honor }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    </div>
+{% endblock %}

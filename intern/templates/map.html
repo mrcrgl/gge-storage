@@ -1,0 +1,18 @@
+{% extends "base_layout.html" %}
+
+
+{% block content %}
+
+    <div class="map">
+        {% for x_line in matrix %}
+            <div class="map map-x">
+            {% for area in x_line %}
+                <div class="map map-y area-population-{{ area.population }}" title="X={{ area.x1 }}-{{ area.x2 }} / Y={{ area.y1 }}-{{ area.y2 }} / {{ area.castles }}">
+                    &nbsp;
+                </div>
+            {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

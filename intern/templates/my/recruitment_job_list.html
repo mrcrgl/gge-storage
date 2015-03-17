@@ -1,0 +1,82 @@
+{% extends "my/parents/my_layout.html" %}
+
+{% load humanize economy_tags %}
+
+{% block tabtitle %}Rekrutierung{% endblock %}
+
+{% block headline %}
+    <h1>Rekrutierung <small>{{ request.player.name }}</small></h1>
+{% endblock %}
+
+{% block tabcontent %}
+    <form action="." method="POST">{% csrf_token %}
+
+        <div>
+            <a href="new" class="btn btn-default pull-right"><span class="glyphicon glyphicon-edit"></span> Neuen Job erstellen</a>
+
+            <a href="javascript:void(0);" class="btn btn-default pull-right" data-toggle="modal" data-target="#explain-production-modal">
+                <span class="glyphicon glyphicon-question-sign"></span>
+                Wer? Wie? Was?
+            </a>
+            <div class="input-group pull-left">
+                <select name="action" class="form-control">
+                    <option value="">------------</option>
+                    <option value="set_active">Aktiv</option>
+                    <option value="set_inactive">Inaktiv</option>
+                    <option value="enable_burst_mode">Burst mode: an</option>
+                    <option value="disable_burst_mode">Burst mode: aus</option>
+                    <option value="clone">Kopieren</option>
+                    <option value="delete">Löschen</option>
+                </select>
+            </div>
+            <div class="input-group" style="padding-left: 10px;">
+                <button class="form-control btn btn-success"><span class="glyphicon glyphicon-play"></span> Ausführen</button>
+            </div>
+            <br class="clearfix" />
+        </div>
+
+        <table class="table">
+        <thead>
+        <tr>
+            <th><input type="checkbox" class="select-all" name="ids" id="checkall" value="all" /></th>
+            <th>Burg</th>
+            <th>Einheit</th>
+            <th>Bis Anz.</th>
+            <th>zuletzt</th>
+            <th>Aktiv</th>
+            <th>Burst</th>
+            <th><span class="glyphicon glyphicon-edit"></span></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for object in object_list %}
+        <tr class="{% if object.burst_mode and object.is_active %}danger{% else %}{{ object.is_active|yesno:'success,warning' }}{% endif %}">
+            <td><input type="checkbox" name="ids" value="{{ object.pk }}" /></td>
+            <td><a href="{{ object.castle.get_absolute_url }}">{{ object.castle }}</a></td>
+            <td>{{ object.unit.title }}</td>
+            <td>{{ object.valid_until|default_if_none:'-/-'|intcomma }} ({{ object.castle|available_amount:object.unit }})</td>
+            <td>
+                {% if not object.last_succeed %}
+                    <span class="label label-info">wartend</span>
+                {% elif object.last_succeed > object.last_fault_date or not object.last_fault_date %}
+                    <span class="label label-success" data-toggle="tooltip"
+                          title="vor {{ object.last_succeed|timesince }}">ausgeführt</span>
+                {% else %}
+                    <span class="label label-warning" data-toggle="tooltip"
+                          data-html="true" title="vor {{ object.last_fault_date|timesince }}
+                          {% if object.last_fault_reason %}<br /><b>{{ object.last_fault_reason }}</b>{% endif %}">
+                        ausgelassen</span>
+                {% endif %}
+            </td>
+            <td>{{ object.is_active|yesno:'an,aus' }}</td>
+            <td>{{ object.burst_mode|yesno:'an,aus' }}</td>
+            <td><a href="{{ object.pk }}"><span class="glyphicon glyphicon-edit"></span></a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+    </form>
+
+    {% include "my/partials/explain_production_modal.html" %}
+
+{% endblock %}

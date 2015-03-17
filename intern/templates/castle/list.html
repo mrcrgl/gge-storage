@@ -1,0 +1,50 @@
+{% extends "layout_intern.html" %}
+
+{% load humanize %}
+
+{% block breadcrumb %}
+    <li class="active">Burgen</li>
+{% endblock %}
+
+{% block pagetitle %}
+    Burgen
+{% endblock %}
+
+{% block headline %}
+    <h1>Burgen</h1>
+{% endblock %}
+
+{% block content %}
+
+    {% include "partials/list-helper.html" %}
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Burg</th>
+                <th>Spieler</th>
+                <th>Allianz</th>
+                <th>Level</th>
+                <th>Ehre</th>
+                <th>Königreich</th>
+                <th>Updated</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for castle in object_list %}
+            <tr>
+                <td>{{ castle.pk }}</td>
+                <td><a href="{{ castle.get_absolute_url }}">{{ castle.name }}</a>{% if castle.player.is_ruin %}<span class="pull-right label label-danger">Ruine</span>{% endif %}</td>
+                <td><a href="{{ castle.player.get_absolute_url }}">{{ castle.player.name }}</a></td>
+                <td><a href="{{ castle.player.alliance.get_absolute_url }}">{{ castle.player.alliance.name }}</a></td>
+                <td>{{ castle.player.level }}</td>
+                <td>{{ castle.player.honor }}</td>
+                <td>{{ castle.kingdom.name }}</td>
+                <td>{{ castle.updated|timesince }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

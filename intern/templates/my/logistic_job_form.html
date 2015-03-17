@@ -1,0 +1,49 @@
+{% extends "my/parents/my_layout.html" %}
+
+{% load humanize templated_form %}
+
+{% block tabtitle %}Einstellungen - Logistik{% endblock %}
+
+{% block headline %}
+    <h1>Logistik Job <small>{{ request.player.name }}</small></h1>
+{% endblock %}
+
+{% block tabcontent %}
+    <div>
+        <a href=".." class="btn btn-default pull-right"><span class="glyphicon glyphicon-arrow-left"></span> zurück</a>
+        <br class="clearfix" />
+    </div>
+
+    <form class="form logistic-job" method="POST" action=".">{% csrf_token %}
+
+        {{ form.castle|parse_field }}
+
+        <div class="form-group {% if form.errors.receiver_name %}has-error{% endif %}">
+            <label for="id_receiver_name">Receiver</label>
+            <input type="text" autocomplete="off" name="receiver_name"
+                   id="id_receiver_name" class="typeahead form-control"
+                   value="{{ form.receiver_name.value|default_if_none:'' }}" />
+
+            {% if form.receiver_name.help_text %}<span class="help-block">{{ form.receiver_name.help_text }}</span>{% endif %}
+            {% for message in form.receiver_name.errors %}
+                <p class="help-block">{{ message }}</p>
+            {% endfor %}
+        </div>
+
+        {{ form.resource|parse_field }}
+        {{ form.resource_limit|parse_field }}
+        {{ form.gold_limit|parse_field }}
+        {{ form.lock_for|parse_field }}
+        {{ form.speed|parse_field }}
+        {{ form.is_active|parse_field }}
+
+        <div class="form-group">
+            <div class="">
+                <input type="submit" class="btn btn-success" value="Speichern" />
+                <input type="reset" class="btn btn-warning" value="Reset" />
+            </div>
+        </div>
+        <br />
+    </form>
+
+{% endblock %}

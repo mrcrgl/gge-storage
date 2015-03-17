@@ -1,0 +1,38 @@
+{% load bs3_forms_filters %}
+<div class="form-group {% if field.errors %}has-error{% endif %}">
+<div class="row">
+
+    <!-- Widget type: {{ field|get_widget }} -->
+
+    {% if field|is_text_field %}
+        {% include "bs3_forms/widget/wysiwyg_field.html" with field=field mode="text" %}
+    {% endif %}
+    {% if field|is_char_field %}
+        {% include "bs3_forms/widget/char_field.html" with field=field data_type="string" %}
+    {% endif %}
+    {% if field|is_integer_field %}
+        {% include "bs3_forms/widget/char_field.html" with field=field data_type="integer" %}
+    {% endif %}
+    {% if field|is_float_field %}
+        {% include "bs3_forms/widget/char_field.html" with field=field data_type="float" %}
+    {% endif %}
+    {% if field|is_boolean_field %}
+        {% include "bs3_forms/widget/boolean_field.html" with field=field %}
+    {% endif %}
+    {% if field|is_checkbox_multi_field %}
+        {% include "bs3_forms/widget/char_field.html" with field=field %}
+    {% endif %}
+    {% if field|is_model_choice_field %}
+        {% include "bs3_forms/widget/model_choice_field.html" with field=field %}
+    {% endif %}
+    {% if field|is_typed_choice_field %}
+        {% include "bs3_forms/widget/typed_choice_field.html" with field=field %}
+    {% endif %}
+    {% if field|is_datetime_field %}
+        {% include "bs3_forms/widget/datepicker_field.html" with field=field mode="datetime" %}
+    {% endif %}
+    {% if field|is_date_field %}
+        {% include "bs3_forms/widget/datepicker_field.html" with field=field mode="date" %}
+    {% endif %}
+
+</div></div>

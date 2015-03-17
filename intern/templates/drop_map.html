@@ -1,0 +1,44 @@
+{% extends "layout_intern.html" %}
+
+
+{% block content %}
+
+    <div class="row">
+    <div class="col-sm-12">
+        <select name="kingdom" id="kingdom">
+            {% for kingdom in kingdoms %}
+            <option value="{{ kingdom.pk }}" {% if request.GET.kingdom == kingdom.pk %}selected{% endif %}>{{ kingdom.name }}</option>
+            {% endfor %}
+        </select>
+
+        <input type="hidden" id="data-url" value="{{ request.path }}" />
+
+        <input type="text" value="" id="current-time" readonly />
+        {% csrf_token %}
+
+        <button id="btn-start-drop-map">Start</button>
+    </div>
+    </div>
+
+    <div class="row">
+    <div class="col-lg-6">
+        <div class="map">
+            {% for x_line in matrix %}
+                <div class="map map-x">
+                {% for area in x_line %}
+                    <div class="map map-y x{{ area.x1 }} y{{ area.y1 }}" title="X={{ area.x1 }}-{{ area.x2 }} / Y={{ area.y1 }}-{{ area.y2 }}">
+                        &nbsp;
+                    </div>
+                {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="log-window">
+            <h3>Log</h3>
+        </div>
+    </div>
+    </div>
+
+{% endblock %}

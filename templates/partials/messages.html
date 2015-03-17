@@ -1,0 +1,32 @@
+{% load i18n %}
+
+{% if messages %}
+<div class="row">
+    <div class="col-md-12">
+        {% for message in messages %}
+            {% if message.tags == 'error' %}
+            <div class="mt30 alert alert-danger alert-dismissable">
+            {% else %}
+             <div class="mt30 alert alert-{{ message.tags }} alert-dismissable">
+            {% endif %}
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                {% with message.tags as message_type %}
+                    {% if message_type == "success" %}
+                        <strong>Erfolgreich!</strong>
+                    {% endif %}
+                    {% if message_type == "warning" %}
+                        <strong>Warnung!</strong>
+                    {% endif %}
+                    {% if message_type == "danger" or message_type == "error" %}
+                        <strong>Fehler!</strong>
+                    {% endif %}
+                    {% if message_type == "info" %}
+                        <strong>Info!</strong>
+                    {% endif %}
+                    {% autoescape off %}{{ message }}{% endautoescape %}
+                {% endwith %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}

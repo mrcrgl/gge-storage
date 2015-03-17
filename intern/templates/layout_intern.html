@@ -1,0 +1,9 @@
+{% extends "base_layout.html" %}
+
+{% block breadcrumbs %}
+    <ol class="breadcrumb">
+        <li><a href="{% url "fe:index" %}">Home</a></li>
+        <li><a href="{% url "intern:index" %}">Dashboard</a></li>
+        {% block breadcrumb %}{% endblock %}
+    </ol>
+{% endblock %}

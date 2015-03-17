@@ -1,0 +1,50 @@
+{% extends "layout_intern.html" %}
+
+{% load humanize map_tags %}
+
+{% block breadcrumb %}
+    <li><a href="{% url "intern:castle_list" %}">Burgen</a></li>
+    <li class="active">Freie Außenposten</li>
+{% endblock %}
+
+{% block pagetitle %}
+    Burgen: Freie Außenposten
+{% endblock %}
+
+{% block headline %}
+    <h1>Freie Außenposten <small>Top 30 nach Aktualität</small></h1>
+{% endblock %}
+
+{% block content %}
+
+    {#% include "partials/list-helper.html" %#}
+
+    <p class="text-danger">Ruine <b>mit</b> Allianzzugehörigkeit</p>
+    <p class="text-success">Ruine <b>ohne</b> Allianzzugehörigkeit</p>
+
+    <table class="table tablesorter">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Wie</th>
+                <th>Typ</th>
+                <th>Position</th>
+                <th>Updated</th>
+                <th>Distanz</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for castle in object_list %}
+            <tr>
+                <td>{{ castle.pk }}</td>
+                <td><span class="text-{{ castle.player.alliance|yesno:"danger,success" }}">{{ castle.player|yesno:"Ruine,Frei" }}</span></td>
+                <td>{{ castle.get_type_display }}</td>
+                <td>{{ castle.pos_x }} / {{ castle.pos_y }}</td>
+                <td>{{ castle.updated|timesince }}</td>
+                <td>{% if request.player %}{{ castle|distance_to_user:request.player }}{% endif %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

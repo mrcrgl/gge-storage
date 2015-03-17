@@ -1,0 +1,4 @@
+
+
+class DeadConnectionException(Exception):
+    pass

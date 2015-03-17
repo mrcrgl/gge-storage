@@ -1,0 +1,14 @@
+{% extends "confederation/parents/confederation_layout.html" %}
+
+{% block tab_content %}
+    <div class="row">
+    <div class="col-sm-12">
+        <h2>BND</h2>
+        {% include "confederation/partials/related_alliance_list.html" with related_alliances=bnd_alliances %}
+
+        <h2>NAP</h2>
+        {% include "confederation/partials/related_alliance_list.html" with related_alliances=nap_alliances %}
+
+    </div>
+    </div>
+{% endblock %}

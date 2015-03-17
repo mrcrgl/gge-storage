@@ -1,0 +1,48 @@
+{% extends "layout_intern.html" %}
+
+{% load humanize %}
+
+{% block breadcrumb %}
+    <li class="active">Spieler</li>
+{% endblock %}
+
+{% block pagetitle %}
+    Spieler
+{% endblock %}
+
+{% block headline %}
+    <h1>Spieler</h1>
+{% endblock %}
+
+{% block content %}
+
+    {% include "partials/list-helper.html" %}
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Username</th>
+                <th>Allianz</th>
+                <th>Rang</th>
+                <th>Level</th>
+                <th>Ehre</th>
+                <th>Update</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for player in object_list %}
+            <tr>
+                <td>{{ player.pk }}</td>
+                <td><a href="{{ player.get_absolute_url }}">{{ player.name }}</a>{% if player.is_ruin %}<span class="pull-right label label-danger">Ruine</span>{% endif %}</td>
+                <td>{% if player.alliance %}<a href="{{ player.alliance.get_absolute_url }}">{{ player.alliance.name }}</a>{% endif %}</td>
+                <td>{% if player.alliance %}{{ player.get_alliance_rank_display }}{% endif %}</td>
+                <td>{{ player.level }}</td>
+                <td>{{ player.honor }}</td>
+                <td>{{ player.updated|timesince }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
