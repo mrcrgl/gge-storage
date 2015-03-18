@@ -54,13 +54,15 @@ class CacheHandler(object):
     def __init__(self):
         self._caches = local()
 
-    def __getitem__(self, alias):
+    def __getitem__(self, alias_pid):
         try:
-            return self._caches.caches[alias]
+            return self._caches.caches[alias_pid]
         except AttributeError:
             self._caches.caches = {}
         except KeyError:
             pass
+
+        alias, pid = alias_pid.split('-')
 
         if alias not in settings.CACHES:
             raise InvalidCacheBackendError(
@@ -68,7 +70,7 @@ class CacheHandler(object):
             )
 
         cache = _create_cache(alias)
-        self._caches.caches[alias] = cache
+        self._caches.caches[alias_pid] = cache
         return cache
 
     def all(self):
