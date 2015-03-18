@@ -6,7 +6,7 @@ from gge_proxy_manager.models import ProductionJob, Castle
 from lib.bot.sequence.production import ProductionSequence
 from lib.socket.response import Response
 from django.utils.timezone import now
-from django.core.cache import cache
+from lib.cache import cache
 
 import logging
 logger = logging.getLogger(__name__)

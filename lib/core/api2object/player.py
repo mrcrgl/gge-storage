@@ -2,7 +2,7 @@ __author__ = 'mriegel'
 
 from gge_proxy_manager.models import Player, PlayerEconomy, Kingdom
 from gge_proxy_manager.methods import clean_duplicate_players
-from django.core.cache import cache
+from lib.cache import cache
 from .alliance import import_alliance
 from lib.core import DATA_IMPORT_LOCK_TIME
 from pushover.api.client import PushoverClient

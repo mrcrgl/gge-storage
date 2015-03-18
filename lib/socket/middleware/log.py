@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-from django.core.cache import cache
+from lib.cache import cache
 
 __author__ = 'riegel'
 import logging

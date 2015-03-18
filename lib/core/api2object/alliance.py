@@ -1,7 +1,7 @@
 __author__ = 'mriegel'
 
 from gge_proxy_manager.models import Alliance
-from django.core.cache import cache
+from lib.cache import cache
 from lib.core import DATA_IMPORT_LOCK_TIME
 import logging
 logger = logging.getLogger(__name__)

@@ -1,7 +1,7 @@
 __author__ = 'mriegel'
 
 from gge_proxy_manager.models import Player, Castle, CastleEconomy, UnitList
-from django.core.cache import cache
+from lib.cache import cache
 from .unit import import_unit_list
 from lib.core import DATA_IMPORT_LOCK_TIME
 import logging
