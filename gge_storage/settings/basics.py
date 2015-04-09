@@ -19,11 +19,11 @@ from ConfigParser import RawConfigParser
 
 config = RawConfigParser()
 
-config_file = os.path.expanduser('~/.gge_storage/settings.ini')
+config_file = os.path.expanduser('~/.gge_storage/settings.ini_')
 if os.path.exists(config_file):
     config.read(os.path.expanduser(config_file))
 else:
-    config.read(os.path.join((ROOT_DIR, 'settings-example.ini'))
+    config.read(os.path.join((ROOT_DIR, 'settings-example.ini')))
         
 ADMINS = tuple(config.items('error mail'))
 MANAGERS = tuple(config.items('404 mail'))
