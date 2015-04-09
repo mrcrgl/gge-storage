@@ -19,7 +19,7 @@ from ConfigParser import RawConfigParser
 
 config = RawConfigParser()
 
-config_file = os.path.expanduser('~/.gge_storage/settings.ini_')
+config_file = os.path.expanduser('~/.gge_storage/settings.ini')
 if os.path.exists(config_file):
     config.read(os.path.expanduser(config_file))
 else:
