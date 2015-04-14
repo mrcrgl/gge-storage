@@ -30,16 +30,13 @@ class JobActionMixin(object):
 
         if action and action in self.ACTIONS:
             function = self.ACTIONS[action]
-            function(request, self.get_queryset().filter(pk__in=id_list))
+            function(request, request.user.pushover_client.notifications.filter(pk__in=id_list))
 
         return HttpResponseRedirect(request.get_full_path())
 
 
 class MyPushView(View, PlayerMixin, JobActionMixin):
     template_name = 'my/push.html'
-
-    def get_queryset(self):
-        return Notify.objects.filter(client__user=self.request.user)
 
     def get(self, request):
 
