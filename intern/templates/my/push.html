@@ -58,41 +58,42 @@
                 </div>
                 <a href="notification/new" class="btn btn-default pull-right"><span class="glyphicon glyphicon-edit"></span> Neue Mitteilung erstellen</a>
             </div>
-        </form>
 
-        <table class="table">
-        <thead>
-        <tr>
-            <th><input type="checkbox" class="select-all" name="ids" id="checkall" value="all" /></th>
-            <th>Allianz</th>
-            <th>Eigene Spieler</th>
-            <th>Priorität</th>
-            <th>Intervall (Sek.)</th>
-            <th>Verfall (Sek.)</th>
-            <th><span class="glyphicon glyphicon-edit"></span></th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for object in notification_list %}
-        <tr>
-            <td><input type="checkbox" name="ids" value="{{ object.pk }}" /></td>
-            <td>{{ object.match_alliance.name|default:'-/-' }}</td>
-            <td>{{ object.match_my_players|yesno }}</td>
-            <td>{{ object.get_priority_display }}</td>
-            <td>{{ object.retry }}</td>
-            <td>{{ object.expire }}</td>
-            <td>
-                <a href="notification/{{ object.pk }}"><span class="glyphicon glyphicon-edit"></span> bearbeiten</a>
-                <a href="notification/{{ object.pk }}/?test=1"><span class="glyphicon glyphicon-phone"></span> testen</a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="6">Es sind keine Mitteilungen angelegt</td>
-        </tr>
-        {% endfor %}
-        </tbody>
-        </table>
+
+            <table class="table">
+            <thead>
+            <tr>
+                <th><input type="checkbox" class="select-all" name="ids" id="checkall" value="all" /></th>
+                <th>Allianz</th>
+                <th>Eigene Spieler</th>
+                <th>Priorität</th>
+                <th>Intervall (Sek.)</th>
+                <th>Verfall (Sek.)</th>
+                <th><span class="glyphicon glyphicon-edit"></span></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for object in notification_list %}
+            <tr>
+                <td><input type="checkbox" name="ids" value="{{ object.pk }}" /></td>
+                <td>{{ object.match_alliance.name|default:'-/-' }}</td>
+                <td>{{ object.match_my_players|yesno }}</td>
+                <td>{{ object.get_priority_display }}</td>
+                <td>{{ object.retry }}</td>
+                <td>{{ object.expire }}</td>
+                <td>
+                    <a href="notification/{{ object.pk }}"><span class="glyphicon glyphicon-edit"></span> bearbeiten</a>
+                    <a href="notification/{{ object.pk }}/?test=1"><span class="glyphicon glyphicon-phone"></span> testen</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">Es sind keine Mitteilungen angelegt</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+        </form>
 
         <h4>Wann wird man benachrichtigt?</h4>
 
