@@ -38,6 +38,9 @@ class JobActionMixin(object):
 class MyPushView(View, PlayerMixin, JobActionMixin):
     template_name = 'my/push.html'
 
+    def get_queryset(self):
+        return Notify.objects.filter(client__user=self.request.user)
+
     def get(self, request):
 
         try:
@@ -55,7 +58,7 @@ class MyPushView(View, PlayerMixin, JobActionMixin):
 
     def post(self, request):
 
-        if request.POST.get('action', None):
+        if request.POST.get('action_mode', '') == 'on':
             return self.post_action(request)
 
         try:
