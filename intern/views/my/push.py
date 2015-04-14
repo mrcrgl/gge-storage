@@ -8,7 +8,34 @@ from django.contrib import messages
 from django.core.urlresolvers import reverse
 
 
-class MyPushView(View, PlayerMixin):
+def delete(request, queryset):
+    for obj in queryset.all():
+        obj.delete()
+    messages.success(request, "Notifications wurden entfernt")
+
+
+class JobActionMixin(object):
+
+    ACTIONS = {
+        'delete': delete,
+    }
+
+    def post_action(self, request):
+
+        id_list = request.POST.getlist("ids")
+        action = request.POST.get("action", None)
+
+        if 'all' in id_list:
+            id_list.remove('all')
+
+        if action and action in self.ACTIONS:
+            function = self.ACTIONS[action]
+            function(request, self.get_queryset().filter(pk__in=id_list))
+
+        return HttpResponseRedirect(request.get_full_path())
+
+
+class MyPushView(View, PlayerMixin, JobActionMixin):
     template_name = 'my/push.html'
 
     def get(self, request):
@@ -27,6 +54,9 @@ class MyPushView(View, PlayerMixin):
         )
 
     def post(self, request):
+
+        if request.POST.get('action', None):
+            return self.post_action(request)
 
         try:
             instance = request.user.pushover_client

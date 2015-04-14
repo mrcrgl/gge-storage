@@ -43,13 +43,26 @@
             </div>
         {% endif %}
 
-        <div>
-            <a href="notification/new" class="btn btn-default pull-right"><span class="glyphicon glyphicon-edit"></span> Neue Mitteilung erstellen</a>
-        </div>
+        <form action="." method="post" class="form">{% csrf_token %}
+            <div>
+
+                <div class="input-group pull-left">
+                    <select name="action" class="form-control">
+                        <option value="">------------</option>
+                        <option value="delete">Löschen</option>
+                    </select>
+                </div>
+                <div class="input-group" style="padding-left: 10px;">
+                    <button class="form-control btn btn-success"><span class="glyphicon glyphicon-play"></span> Ausführen</button>
+                </div>
+                <a href="notification/new" class="btn btn-default pull-right"><span class="glyphicon glyphicon-edit"></span> Neue Mitteilung erstellen</a>
+            </div>
+        </form>
 
         <table class="table">
         <thead>
         <tr>
+            <th><input type="checkbox" class="select-all" name="ids" id="checkall" value="all" /></th>
             <th>Allianz</th>
             <th>Eigene Spieler</th>
             <th>Priorität</th>
@@ -61,6 +74,7 @@
         <tbody>
         {% for object in notification_list %}
         <tr>
+            <td><input type="checkbox" name="ids" value="{{ object.pk }}" /></td>
             <td>{{ object.match_alliance.name|default:'-/-' }}</td>
             <td>{{ object.match_my_players|yesno }}</td>
             <td>{{ object.get_priority_display }}</td>
