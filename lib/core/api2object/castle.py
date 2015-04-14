@@ -18,6 +18,8 @@ def import_castle(ai, kingdom):
     if castle_id:
         return castle_id
 
+    player = None
+
     try:
         player_id = int(ai[4])
     except IndexError:

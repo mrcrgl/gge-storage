@@ -23,7 +23,6 @@ class GeotrackingMiddleware():
 
         game, created = Game.objects.get_or_create(product_key=message.product)
         kingdom, created = Kingdom.objects.get_or_create(kid=int(data.get("KID")), game=game)
-        player = None
 
         if data.get("OI"):
             for oi in data.get("OI", []):
