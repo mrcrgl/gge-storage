@@ -17,6 +17,6 @@ def catch_available_villages(instance, **kwargs):
 
 
 @receiver(post_save, sender=AttackLog)
-def catch_available_villages(instance, **kwargs):
+def notify_incoming_attack(instance, **kwargs):
     if instance.type < 4:
         notify_attack(instance)

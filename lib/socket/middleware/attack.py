@@ -1,14 +1,9 @@
 from __future__ import unicode_literals
 
-from gge_proxy_manager.models import Player, Castle, Alliance, Kingdom, Game, AttackLog
-from pushover.models import Notify
-from pushover.api.client import PushoverClient
+from gge_proxy_manager.models import Castle, Kingdom, Game, AttackLog
 from lib.core.api2object.castle import import_castle
 from lib.core.api2object.player import import_player
 from django.utils.timezone import timedelta, now
-from django.db.models import Q
-from django.conf import settings
-from django.utils import formats
 
 __author__ = 'riegel'
 import logging
@@ -29,25 +24,25 @@ class AttackLogMiddleware():
 
         M = A.get("M")
 
-        GS = A.get("GS", 0)  # Count warrior
+        # GS = A.get("GS", 0)  # Count warrior
 
         GA = A.get("GA", {})  # Warrior detail list {L, M, R}
-        GA_L = GA.get("L", [])
-        GA_M = GA.get("M", [])
-        GA_R = GA.get("R", [])
+        # GA_L = GA.get("L", [])
+        # GA_M = GA.get("M", [])
+        # GA_R = GA.get("R", [])
 
         PT = M.get("PT")  # seconds elapsed
         TT = M.get("TT")  # total time
 
-        SID = M.get("SID")  # gge_id of source player
-        TID = M.get("TID")  # gge_id of target player
+        # SID = M.get("SID")  # gge_id of source player
+        # TID = M.get("TID")  # gge_id of target player
 
         MID = M.get("MID")  # Message id
 
         TA = M.get("TA")  # target attack
         SA = M.get("SA")  # source attack
 
-        HBW = M.get("HBW")  # ???
+        # HBW = M.get("HBW")  # ???
 
         KID = M.get("KID")
 

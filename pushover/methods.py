@@ -3,6 +3,8 @@ from .models import NotifyVillage, Notify
 from django.db.models import Q
 from django.utils import formats
 from django.utils.timezone import now
+from django.core.cache import cache
+import hashlib
 
 
 def distinct_fix(qs):
@@ -92,9 +94,18 @@ def send_push_message(title, message, notifier, api_client=None):
     if not notifier.client.enabled:
         return
 
+    key = "-".join(('pushover', str(notifier.pk), message))
+    hashed_key = hashlib.md5(key).hexdigest()[:12]
+
+    if cache.get(hashed_key, None):
+        return
+
     api_client.push(notifier.client.client_token, message=message, title=title,
                     retry=notifier.retry, expire=notifier.expire,
                     priority=notifier.priority)
+
+    # Lock for 24 hours
+    cache.set(hashed_key, True, 60 * 60 * 24)
 
 
 def send_push_messages(title, message, queryset, api_client=None):
