@@ -38,7 +38,7 @@ def notify_ruin_village(castle):
     title = "%s RSD Ruine" % castle.get_resource_type_display()
     message = "%s, %d:%d" % (castle.kingdom.name, castle.pos_x, castle.pos_y)
 
-    send_push_messages(title, message, distinct_fix(qs))
+    send_push_messages(title, message, distinct_fix(qs), unique_pk=castle.pk)
 
 
 def notify_attack(attack):
@@ -83,10 +83,10 @@ def notify_attack(attack):
 
     push_msg = "\n".join(message_parts)
 
-    send_push_messages(title, push_msg, notifiers)
+    send_push_messages(title, push_msg, notifiers, unique_pk=attack.pk)
 
 
-def send_push_message(title, message, notifier, api_client=None):
+def send_push_message(title, message, notifier, api_client=None, unique_pk='x'):
 
     if not api_client:
         api_client = PushoverClient()
@@ -94,7 +94,7 @@ def send_push_message(title, message, notifier, api_client=None):
     if not notifier.client.enabled:
         return
 
-    key = "-".join(('pushover', str(notifier.pk), message))
+    key = "-".join(('pushover', str(notifier.pk), str(unique_pk)))
     hashed_key = hashlib.md5(key).hexdigest()[:12]
 
     if cache.get(hashed_key, None):
@@ -104,14 +104,14 @@ def send_push_message(title, message, notifier, api_client=None):
                     retry=notifier.retry, expire=notifier.expire,
                     priority=notifier.priority)
 
-    # Lock for 24 hours
-    cache.set(hashed_key, True, 60 * 60 * 24)
+    # Lock for an hour
+    cache.set(hashed_key, True, 60 * 60 * 1)
 
 
-def send_push_messages(title, message, queryset, api_client=None):
+def send_push_messages(title, message, queryset, api_client=None, unique_pk='x'):
 
     if not api_client:
         api_client = PushoverClient()
 
     for notifier in queryset:
-        send_push_message(title, message, notifier, api_client=api_client)
+        send_push_message(title, message, notifier, api_client=api_client, unique_pk=unique_pk)

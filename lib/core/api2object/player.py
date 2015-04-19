@@ -5,8 +5,6 @@ from gge_proxy_manager.methods import clean_duplicate_players
 from lib.cache import cache
 from .alliance import import_alliance
 from lib.core import DATA_IMPORT_LOCK_TIME
-from pushover.api.client import PushoverClient
-from django.conf import settings
 from django.db import IntegrityError, transaction
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -58,6 +56,7 @@ def import_player(oi, kingdom):
         qs = Player.objects.filter(game=kingdom.game, gge_id=int(oi.get("OID")))
         clean_duplicate_players(qs)
         player = Player.objects.get(game=kingdom.game, gge_id=int(oi.get("OID")))
+        created = False
 
     if not created:
         player.name = oi.get("N")
@@ -70,14 +69,6 @@ def import_player(oi, kingdom):
         if oi.get("AVP"):
             player.success = int(oi.get("AVP"))
         is_ruin = bool(oi.get("R", 0))
-
-        if is_ruin and not player.is_ruin and not player.alliance_id:
-            # notify if player becomes a ruin
-            notify_new_ruin(player)
-
-        if player.is_ruin and (player.alliance_id and not alliance_id):
-            # Notify if a ruin becomes non alliance member
-            notify_new_ruin(player)
 
         player.is_ruin = is_ruin
 
@@ -98,51 +89,6 @@ def import_player(oi, kingdom):
     cache.set(key, player.pk, DATA_IMPORT_LOCK_TIME)
 
     return player.pk
-
-
-def notify_new_ruin(player):
-
-    if player.castles_who_are_villages().count() < 1:
-        return
-
-    PUSHOVER_NEW_RUIN_TOKEN = getattr(settings, "PUSHOVER_NEW_RUIN_TOKEN")
-
-    if not PUSHOVER_NEW_RUIN_TOKEN:
-        return
-
-    villages = {}
-
-    for village in player.castles_who_are_villages():
-        if village.kingdom_id not in villages:
-            villages[village.kingdom.name] = 0
-
-        villages[village.kingdom.name] += 1
-
-    title = "Neue Ruine: %s" % player.name
-    message = "Doerfer:\n" + "\n".join(["%s: %d" % (k, villages[k]) for k in villages])
-
-    api = PushoverClient()
-    api.push(PUSHOVER_NEW_RUIN_TOKEN, message, title, priority=0)
-
-    #notify = getattr(settings, "NOTIFY_NEW_RUIN", {})
-    #notify_users = notify.get(player.game.product_key, list())
-
-    #for email, username in notify_users:
-    #    user = None
-    #    if username:
-    #        try:
-    #            user = User.objects.get(username=username)
-    #        except User.DoesNotExist:
-    #            pass
-
-    #    send_message(
-    #        "socket.notify.new_ruin",
-    #        email,
-    #        {
-    #            "user": user,
-    #            "ruin": player,
-    #        }
-    #    )
 
 
 def import_player_economy(ai, player):
