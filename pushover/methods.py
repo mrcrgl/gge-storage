@@ -100,12 +100,12 @@ def send_push_message(title, message, notifier, api_client=None, unique_pk='x'):
     if cache.get(hashed_key, None):
         return
 
+    # Lock for an hour
+    cache.set(hashed_key, True, 60 * 60 * 1)
+
     api_client.push(notifier.client.client_token, message=message, title=title,
                     retry=notifier.retry, expire=notifier.expire,
                     priority=notifier.priority)
-
-    # Lock for an hour
-    cache.set(hashed_key, True, 60 * 60 * 1)
 
 
 def send_push_messages(title, message, queryset, api_client=None, unique_pk='x'):
